@@ -1,0 +1,11 @@
+C:\Users\Gravity\Documents\testUIProject\testUI\bin\Debug\testUI.exe.config
+C:\Users\Gravity\Documents\testUIProject\testUI\bin\Debug\testUI.exe
+C:\Users\Gravity\Documents\testUIProject\testUI\bin\Debug\testUI.pdb
+C:\Users\Gravity\Documents\testUIProject\testUI\obj\Debug\testUI.csprojAssemblyReference.cache
+C:\Users\Gravity\Documents\testUIProject\testUI\obj\Debug\testUI.Form1.resources
+C:\Users\Gravity\Documents\testUIProject\testUI\obj\Debug\testUI.Properties.Resources.resources
+C:\Users\Gravity\Documents\testUIProject\testUI\obj\Debug\testUI.csproj.GenerateResource.cache
+C:\Users\Gravity\Documents\testUIProject\testUI\obj\Debug\testUI.exe
+C:\Users\Gravity\Documents\testUIProject\testUI\obj\Debug\testUI.pdb
+C:\Users\Gravity\Documents\testUIProject\testUI\obj\Debug\testUI.Form2.resources
+C:\Users\Gravity\Documents\testUIProject\testUI\obj\Debug\testUI.Form3.resources
