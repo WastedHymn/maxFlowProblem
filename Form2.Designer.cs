@@ -33,6 +33,10 @@
             this.nodeNumberLabel = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.nodePanel = new System.Windows.Forms.Panel();
+            this.setEdgeCapacityButton = new System.Windows.Forms.Button();
+            this.setEdgeCapacityTextBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.nodeCapacityTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,7 +51,6 @@
             this.nodeDropDown = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button4 = new System.Windows.Forms.Button();
             this.nodePanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -102,6 +105,9 @@
             // nodePanel
             // 
             this.nodePanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.nodePanel.Controls.Add(this.setEdgeCapacityButton);
+            this.nodePanel.Controls.Add(this.setEdgeCapacityTextBox);
+            this.nodePanel.Controls.Add(this.label2);
             this.nodePanel.Controls.Add(this.button4);
             this.nodePanel.Controls.Add(this.button3);
             this.nodePanel.Controls.Add(this.nodeCapacityTextBox);
@@ -115,11 +121,52 @@
             this.nodePanel.Controls.Add(this.newNodeNameTextBox);
             this.nodePanel.Controls.Add(this.newNodeNameLabel);
             this.nodePanel.Controls.Add(this.nodeDropDown);
-            this.nodePanel.Location = new System.Drawing.Point(32, 186);
+            this.nodePanel.Location = new System.Drawing.Point(34, 138);
             this.nodePanel.Name = "nodePanel";
-            this.nodePanel.Size = new System.Drawing.Size(254, 494);
+            this.nodePanel.Size = new System.Drawing.Size(254, 569);
             this.nodePanel.TabIndex = 4;
             this.nodePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.nodePanel_Paint);
+            // 
+            // setEdgeCapacityButton
+            // 
+            this.setEdgeCapacityButton.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.setEdgeCapacityButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.setEdgeCapacityButton.Location = new System.Drawing.Point(66, 467);
+            this.setEdgeCapacityButton.Name = "setEdgeCapacityButton";
+            this.setEdgeCapacityButton.Size = new System.Drawing.Size(113, 23);
+            this.setEdgeCapacityButton.TabIndex = 16;
+            this.setEdgeCapacityButton.Text = "Limit Belirle";
+            this.setEdgeCapacityButton.UseVisualStyleBackColor = false;
+            this.setEdgeCapacityButton.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // setEdgeCapacityTextBox
+            // 
+            this.setEdgeCapacityTextBox.Location = new System.Drawing.Point(59, 440);
+            this.setEdgeCapacityTextBox.Name = "setEdgeCapacityTextBox";
+            this.setEdgeCapacityTextBox.Size = new System.Drawing.Size(129, 20);
+            this.setEdgeCapacityTextBox.TabIndex = 15;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label2.ForeColor = System.Drawing.Color.Orange;
+            this.label2.Location = new System.Drawing.Point(2, 389);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(248, 39);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Seçili Ana Düğüm \r\nve \r\nÇocuk Düğüm Arasındaki Kenar Kapasitesi";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(57, 534);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(122, 23);
+            this.button4.TabIndex = 13;
+            this.button4.Text = "Yolları Bul";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -194,11 +241,11 @@
             this.addChildToTheNodeLabel.AutoSize = true;
             this.addChildToTheNodeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.addChildToTheNodeLabel.ForeColor = System.Drawing.Color.Orange;
-            this.addChildToTheNodeLabel.Location = new System.Drawing.Point(49, 291);
+            this.addChildToTheNodeLabel.Location = new System.Drawing.Point(56, 291);
             this.addChildToTheNodeLabel.Name = "addChildToTheNodeLabel";
-            this.addChildToTheNodeLabel.Size = new System.Drawing.Size(147, 16);
+            this.addChildToTheNodeLabel.Size = new System.Drawing.Size(134, 16);
             this.addChildToTheNodeLabel.TabIndex = 6;
-            this.addChildToTheNodeLabel.Text = "Düğüme Çocuk Ekle";
+            this.addChildToTheNodeLabel.Text = "Çocuk Düğüm Seç";
             this.addChildToTheNodeLabel.Click += new System.EventHandler(this.label2_Click);
             // 
             // addChildNodeDropDown
@@ -256,7 +303,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Roboto Black", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label3.Location = new System.Drawing.Point(32, 75);
+            this.label3.Location = new System.Drawing.Point(34, 27);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(254, 29);
             this.label3.TabIndex = 5;
@@ -268,20 +315,10 @@
             this.panel1.Controls.Add(this.nodeNumberLabel);
             this.panel1.Controls.Add(this.nodeNumberInput);
             this.panel1.Controls.Add(this.button2);
-            this.panel1.Location = new System.Drawing.Point(32, 107);
+            this.panel1.Location = new System.Drawing.Point(34, 59);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(254, 73);
             this.panel1.TabIndex = 6;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(66, 411);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(122, 23);
-            this.button4.TabIndex = 13;
-            this.button4.Text = "Yolları Bul";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Form2
             // 
@@ -326,5 +363,8 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox nodeCapacityTextBox;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button setEdgeCapacityButton;
+        private System.Windows.Forms.TextBox setEdgeCapacityTextBox;
+        private System.Windows.Forms.Label label2;
     }
 }

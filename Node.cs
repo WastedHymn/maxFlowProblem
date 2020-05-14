@@ -11,6 +11,9 @@ namespace testUI
         private string nodeName;
         private string nodeType;
         public List<Node> children = new List<Node>();
+        public Dictionary<int, List<int>> edges = new Dictionary<int, List<int>>(); 
+        //public List<int> edgesToChildren = new List<int>();
+        //public List<int> residualEdgesFromChildren = new List<int>();
         private float nodeCapacity;
         private float nodeCurrentFlow;
 

@@ -15,10 +15,13 @@ namespace testUI
     {
         public List<Node> path = new List<Node>();
         public List<Node> nodes = new List<Node>();
+        public List<int> selectedChildIndexes = new List<int>();
         public Dictionary<int, List<Node>> availablePaths = new Dictionary<int, List<Node>>();
         public int pathCounter = 0;
         public Node startNode;
         public int currentNodeIndex;
+        public int delta;
+        public int totalMaxFlow;
         public Form2()
         {
             InitializeComponent();
@@ -29,6 +32,115 @@ namespace testUI
             //this.Controls.Add(t1);
             setupDropDown();
 
+        }
+
+        public int findDelta()
+        {
+            int totalMaxFlow;
+            //int nodeNumber = nodes.Count;
+            int maxCapacity = 0;
+            int counter = 0;
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                for (int j = 0; j < nodes[i].edges.Count; j++)
+                {
+                    if (nodes[i].edges[j][1] > maxCapacity)
+                    {
+                        maxCapacity = nodes[i].edges[j][1];
+                    }
+                }
+            }
+
+            while (maxCapacity >= 2)
+            {
+                maxCapacity = maxCapacity / 2;
+                counter++;
+            }
+
+            double result = Math.Pow(2, Convert.ToDouble(counter));
+            Console.WriteLine("Delta's first value: " + result);
+            return Convert.ToInt32(result);
+        }
+
+        public int findMaxCapacityEdge()
+        {
+            int maxCapacity = 0;
+            int index = -1;
+            for (int i = 0; i < nodes[currentNodeIndex].edges.Count; i++)
+            {
+                int remainingFlowCapacity = nodes[currentNodeIndex].edges[i][1] - nodes[currentNodeIndex].edges[i][0];
+                if (remainingFlowCapacity > maxCapacity && remainingFlowCapacity >= delta)
+                {
+                    maxCapacity = remainingFlowCapacity;
+                    index = i;
+                }
+            }
+            return index;
+        }
+
+        public int findBottleneck()
+        {
+            //currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1].getNodeName());
+            int startBottleneckIndex = selectedChildIndexes[0];
+            int bottleneck = nodes[0].edges[startBottleneckIndex][1] - nodes[0].edges[startBottleneckIndex][0];
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                int index = nodes.FindIndex(item => item.getNodeName() == path[i].getNodeName());
+                int num = nodes[index].edges[startBottleneckIndex][1] - nodes[index].edges[startBottleneckIndex][0];
+                if (num < bottleneck)
+                {
+                    bottleneck = num;
+                }
+            }
+            return bottleneck;
+        }
+
+        public void augmentTheFlow(int bottleneck)
+        {
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                int index = nodes.FindIndex(item => item.getNodeName() == path[i].getNodeName());
+                int index2 = selectedChildIndexes[0];
+                nodes[index].edges[index][0] += bottleneck;
+            }
+        }
+
+        public void findMaxFlow()
+        {
+            totalMaxFlow = 0;
+            delta = findDelta();
+            currentNodeIndex = 0;
+            while (delta > 0)
+            {
+                path.Add(nodes[currentNodeIndex]);
+                int ind = findMaxCapacityEdge();
+                if (nodes[currentNodeIndex].getNodeType() != "finish")
+                {
+                    if (ind == -1)
+                    {
+                        path.RemoveAt(path.Count - 1);
+                        if (path.Count == 0)
+                        {
+                            delta = delta / 2;
+                            currentNodeIndex = 0;
+                        }
+                    }
+                    else
+                    {
+                        selectedChildIndexes.Add(ind);
+                        currentNodeIndex = ind;
+                    }
+                }
+                else
+                {
+                    int bottleneck = findBottleneck();
+                    totalMaxFlow += bottleneck;
+                    augmentTheFlow(bottleneck);
+                    path.Clear();
+                    currentNodeIndex = 0;
+                }
+            }
+            Console.WriteLine("Max Flow: " + totalMaxFlow);
         }
 
         public void findPaths()
@@ -202,14 +314,14 @@ namespace testUI
                     {
                         node.setNodeType("start");
                         node.setNodeName("start");
-                        nodeDropDown.Items.Add("Başlangıç Düğümü(Ad Verin!)");
+                        nodeDropDown.Items.Add("start");
                     }
                     else if (i == num - 1)
                     {
                         node.setNodeType("finish");
                         node.setNodeName("finish");
-                        nodeDropDown.Items.Add("Bitiş Düğümü(Ad Verin!)");
-                        addChildNodeDropDown.Items.Add("Bitiş Düğümü(Ad Verin!)");
+                        nodeDropDown.Items.Add("finish");
+                        addChildNodeDropDown.Items.Add("finish");
                     }
                     else
                     {
@@ -355,6 +467,11 @@ namespace testUI
             else
             {
                 nodes[nodeDropDown.SelectedIndex].addChildNode(nodes[addChildNodeDropDown.SelectedIndex + 1]);
+                string dlg = addChildNodeDropDown.Items[addChildNodeDropDown.SelectedIndex].ToString();
+                Console.WriteLine("dlg: " + dlg);
+                int childNode = nodes[nodeDropDown.SelectedIndex].children.FindIndex(item => item.getNodeName() == dlg);
+                Console.WriteLine("IVJ: " + childNode);
+                nodes[nodeDropDown.SelectedIndex].edges.Add(childNode, new List<int>() { 0, 0, 0 });
                 for (int i=0; i<nodes[nodeDropDown.SelectedIndex].children.Count; i++)
                 {
                     Console.WriteLine("ÇOCUKLAR: " + nodes[nodeDropDown.SelectedIndex].children[i].getNodeName());
@@ -369,7 +486,56 @@ namespace testUI
         private void button4_Click(object sender, EventArgs e)
         {
             //printChildren();
-            findPaths();
+            //findPaths();
+            findMaxFlow();
+        }
+
+        //Set capacity of the edge
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string cap = setEdgeCapacityTextBox.Text;
+            bool check = cap.Any(x => char.IsLetter(x));
+            if (check || cap.Length == 0) 
+            {
+                MessageBox.Show("Lütfen sayı giriniz!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Console.WriteLine("Lütfen sayı giriniz!");
+            }
+            else
+            {
+                int mainNode = nodeDropDown.SelectedIndex;
+                string str = addChildNodeDropDown.Items[addChildNodeDropDown.SelectedIndex].ToString();
+                Console.WriteLine("str: " + str);
+                int childNode = nodes[mainNode].children.FindIndex(item => item.getNodeName() == str);
+                Console.WriteLine("child node: "+ childNode);
+                printAllKeys();
+                //List<int> keyList = new List<int>(nodes[mainNode].edges.Keys);
+                //var t = nodes[mainNode].edges.Keys;
+                //for (int i=0; i<keyList.Count;i++)
+                //{
+                //  Console.Write(keyList[i] + " ");
+                //   Console.WriteLine();
+                //   nodes[mainNode].edges[1][0] = 5;
+                //    Console.WriteLine(nodes[mainNode].edges[1][0]);
+                //}
+                Console.WriteLine();
+                nodes[mainNode].edges[childNode][1] = Int32.Parse(setEdgeCapacityTextBox.Text);
+                Console.WriteLine("Edge capacity: " + nodes[mainNode].edges[childNode][1]);
+                MessageBox.Show("Seçilen çocuk indexi: " + childNode, "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }       
+        }
+
+        public void printAllKeys()
+        {
+            for (int i=0; i<nodes.Count ; i++)
+            {
+                List<int> k = new List<int>(nodes[i].edges.Keys);
+                for (int j = 0; j < k.Count; j++)
+                {
+                    Console.Write(k[j] + " ");
+
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
