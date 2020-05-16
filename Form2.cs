@@ -22,6 +22,7 @@ namespace testUI
         public int currentNodeIndex;
         public int delta;
         public int totalMaxFlow;
+        public int loopCounter = 0;
         public Form2()
         {
             InitializeComponent();
@@ -69,24 +70,41 @@ namespace testUI
             for (int i = 0; i < nodes[currentNodeIndex].edges.Count; i++)
             {
                 int remainingFlowCapacity = nodes[currentNodeIndex].edges[i][1] - nodes[currentNodeIndex].edges[i][0];
+                Console.WriteLine(nodes[currentNodeIndex].getNodeName() + " düğümünün " + i + ". kenarına ait kalan akış " + remainingFlowCapacity);
                 if (remainingFlowCapacity > maxCapacity && remainingFlowCapacity >= delta)
                 {
                     maxCapacity = remainingFlowCapacity;
                     index = i;
                 }
             }
-            return index;
+            if (index == -1)
+            {
+                return index;
+            }
+            else
+            {
+                selectedChildIndexes.Add(index);
+                int smt = nodes.FindIndex(item => item.getNodeName() == nodes[currentNodeIndex].children[index].getNodeName());
+                Console.WriteLine("Seçilen kenar: " + index);
+                return smt;
+            }
         }
 
         public int findBottleneck()
         {
             //currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1].getNodeName());
-            int startBottleneckIndex = selectedChildIndexes[0];
-            int bottleneck = nodes[0].edges[startBottleneckIndex][1] - nodes[0].edges[startBottleneckIndex][0];
+            //int startBottleneckIndex = selectedChildIndexes[0];
+            int bottleneck = 1000000000;
+            Console.WriteLine("BOTTLENECK START VALUE: " + bottleneck);
+            Console.Write("selectedChildIndexes: ");
+            Console.WriteLine();
             for (int i = 0; i < path.Count - 1; i++)
             {
                 int index = nodes.FindIndex(item => item.getNodeName() == path[i].getNodeName());
-                int num = nodes[index].edges[startBottleneckIndex][1] - nodes[index].edges[startBottleneckIndex][0];
+                int k = selectedChildIndexes[i];
+                int num = nodes[index].edges[k][1] - nodes[index].edges[k][0];
+                Console.WriteLine("NODENAME: " + nodes[index].getNodeName());
+                Console.WriteLine("NUM: " + num);
                 if (num < bottleneck)
                 {
                     bottleneck = num;
@@ -100,43 +118,76 @@ namespace testUI
             for (int i = 0; i < path.Count - 1; i++)
             {
                 int index = nodes.FindIndex(item => item.getNodeName() == path[i].getNodeName());
-                int index2 = selectedChildIndexes[0];
-                nodes[index].edges[index][0] += bottleneck;
+                int index2 = selectedChildIndexes[i];
+                nodes[index].edges[index2][0] += bottleneck;
             }
         }
 
         public void findMaxFlow()
         {
+            Console.WriteLine("############################################");
             totalMaxFlow = 0;
             delta = findDelta();
             currentNodeIndex = 0;
             while (delta > 0)
             {
-                path.Add(nodes[currentNodeIndex]);
+                Console.WriteLine();
+                Console.WriteLine("Delta: " + delta);
                 int ind = findMaxCapacityEdge();
+                path.Add(nodes[currentNodeIndex]);
+                Console.Write("Path: ");
+                for (int i=0; i<path.Count;i++)
+                {
+                    Console.Write(path[i].getNodeName() + " ");
+                }
+                Console.WriteLine();
                 if (nodes[currentNodeIndex].getNodeType() != "finish")
                 {
+                    Console.WriteLine("node != finish && İND: " + ind);
                     if (ind == -1)
                     {
+                        Console.WriteLine("İND == -1");
+                        Console.WriteLine("PATH COUNT: " + path.Count);
                         path.RemoveAt(path.Count - 1);
+                        Console.Write("Path 2 : ");
+                        for (int i = 0; i < path.Count; i++)
+                        {
+                            Console.Write(path[i].getNodeName() + " ");
+                        }
                         if (path.Count == 0)
                         {
+                            Console.WriteLine("DELTA/2");
                             delta = delta / 2;
+                            selectedChildIndexes.Clear();
+                            path.Clear();
                             currentNodeIndex = 0;
+                        }else if (loopCounter > path.Count - 1)
+                        {
+                            delta = delta / 2;
+                            selectedChildIndexes.Clear();
+                            path.Clear();
+                            currentNodeIndex = 0;
+                            loopCounter = 0;
                         }
                     }
                     else
                     {
-                        selectedChildIndexes.Add(ind);
+                        loopCounter++;
+                        Console.WriteLine("PATH COUNT 2: " + path.Count);
+                        Console.WriteLine("Şimdiki düğüm: " + nodes[currentNodeIndex].getNodeName());
+                        Console.WriteLine("Gidilecek Düğüm: " + nodes[ind].getNodeName());
                         currentNodeIndex = ind;
                     }
                 }
                 else
                 {
                     int bottleneck = findBottleneck();
+                    Console.WriteLine("BOTTLENECK: " + bottleneck);
                     totalMaxFlow += bottleneck;
+                    Console.WriteLine("TOTALMAXFLOW: " + totalMaxFlow);
                     augmentTheFlow(bottleneck);
                     path.Clear();
+                    selectedChildIndexes.Clear();
                     currentNodeIndex = 0;
                 }
             }
