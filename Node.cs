@@ -11,7 +11,12 @@ namespace testUI
         private string nodeName;
         private string nodeType;
         public List<Node> children = new List<Node>();
-        public Dictionary<int, List<int>> edges = new Dictionary<int, List<int>>(); 
+        public Dictionary<int, List<int>> edges = new Dictionary<int, List<int>>();
+        //deadEnds list stores edge indexes that leads a dead end node
+        public List<int> deadEnds = new List<int>();
+        //deadNeighbours list stores neighbours name that leads a dead end node
+        public List<string> deadNeighbours = new List<string>();
+        public List<string> neighbours = new List<string>();
         //public List<int> edgesToChildren = new List<int>();
         //public List<int> residualEdgesFromChildren = new List<int>();
         private float nodeCapacity;

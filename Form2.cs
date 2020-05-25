@@ -13,7 +13,7 @@ namespace testUI
 {
     public partial class Form2 : Form
     {
-        public List<Node> path = new List<Node>();
+        public List<string> path = new List<string>();
         public List<Node> nodes = new List<Node>();
         public List<int> selectedChildIndexes = new List<int>();
         public Dictionary<int, List<Node>> availablePaths = new Dictionary<int, List<Node>>();
@@ -23,6 +23,7 @@ namespace testUI
         public int delta;
         public int totalMaxFlow;
         public int loopCounter = 0;
+        
         public Form2()
         {
             InitializeComponent();
@@ -63,30 +64,67 @@ namespace testUI
             return Convert.ToInt32(result);
         }
 
-        public int findMaxCapacityEdge()
+        public string findMaxCapacityEdge()
         {
             int maxCapacity = 0;
             int index = -1;
+            int selectedNeighbourIndex;
+            //Search all child edges
             for (int i = 0; i < nodes[currentNodeIndex].edges.Count; i++)
             {
-                int remainingFlowCapacity = nodes[currentNodeIndex].edges[i][1] - nodes[currentNodeIndex].edges[i][0];
-                Console.WriteLine(nodes[currentNodeIndex].getNodeName() + " düğümünün " + i + ". kenarına ait kalan akış " + remainingFlowCapacity);
-                if (remainingFlowCapacity > maxCapacity && remainingFlowCapacity >= delta)
+                if (!nodes[currentNodeIndex].deadEnds.Contains(i))
                 {
-                    maxCapacity = remainingFlowCapacity;
-                    index = i;
+                    int remainingFlowCapacity = nodes[currentNodeIndex].edges[i][1] - nodes[currentNodeIndex].edges[i][0];
+                    Console.WriteLine(nodes[currentNodeIndex].getNodeName() + " düğümünün " + i + ". kenarına ait kalan akış " + remainingFlowCapacity);
+                    if (remainingFlowCapacity > maxCapacity && remainingFlowCapacity >= delta)
+                    {
+                        string negative = "-" + nodes[currentNodeIndex].children[i].getNodeName();
+                        if (path.Contains(nodes[currentNodeIndex].children[i].getNodeName())==false && path.Contains(negative) == false)
+                        {
+                            maxCapacity = remainingFlowCapacity;
+                            index = i;
+                        }
+                    }
                 }
             }
-            if (index == -1)
-            {
-                return index;
-            }
-            else
+            if (index != -1)
             {
                 selectedChildIndexes.Add(index);
                 int smt = nodes.FindIndex(item => item.getNodeName() == nodes[currentNodeIndex].children[index].getNodeName());
                 Console.WriteLine("Seçilen kenar: " + index);
-                return smt;
+                //smt.ToString();
+                return smt.ToString();
+            }
+            else
+            {
+                int maxFlow = 0;
+                selectedNeighbourIndex = -1;
+                //Search neighbours
+                for (int i=0; i<nodes[currentNodeIndex].neighbours.Count;i++)
+                {
+                    int neighbourIndex = nodes.FindIndex(item => item.getNodeName() == nodes[currentNodeIndex].neighbours[i]);
+                    int neighbourChildIndex = nodes[neighbourIndex].children.FindIndex(item => item.getNodeName() == nodes[currentNodeIndex].getNodeName());
+                    //check if neighbour node is not in the path and flow is greater than zero.
+                    if ((path.Contains(nodes[neighbourIndex].getNodeName()) == false) && nodes[neighbourIndex].edges[neighbourChildIndex][0] > 0 && (nodes[currentNodeIndex].deadNeighbours.Contains(nodes[neighbourIndex].getNodeName()) == false))
+                    {
+                        if (nodes[neighbourIndex].edges[neighbourChildIndex][0] > maxFlow)
+                        {
+                            maxFlow = nodes[neighbourIndex].edges[neighbourChildIndex][0];
+                            selectedNeighbourIndex = neighbourIndex;
+                        }
+                    }
+                }
+                if (selectedNeighbourIndex != -1)
+                {
+                    selectedChildIndexes.Add(-1);
+                    return "-" + selectedNeighbourIndex.ToString();
+                }
+                else
+                {
+                    selectedChildIndexes.Add(-2);
+                    return "null";
+                }
+                //return index;
             }
         }
 
@@ -96,18 +134,40 @@ namespace testUI
             //int startBottleneckIndex = selectedChildIndexes[0];
             int bottleneck = 1000000000;
             Console.WriteLine("BOTTLENECK START VALUE: " + bottleneck);
-            Console.Write("selectedChildIndexes: ");
+            //Console.Write("selectedChildIndexes: ");
             Console.WriteLine();
             for (int i = 0; i < path.Count - 1; i++)
             {
-                int index = nodes.FindIndex(item => item.getNodeName() == path[i].getNodeName());
+                Console.WriteLine("bottleneck for loop i value: " + i + " nodename: " + path[i]);
+                int index;
+                Console.WriteLine("andthebeatgoeson: " + path[i]);
                 int k = selectedChildIndexes[i];
-                int num = nodes[index].edges[k][1] - nodes[index].edges[k][0];
-                Console.WriteLine("NODENAME: " + nodes[index].getNodeName());
-                Console.WriteLine("NUM: " + num);
-                if (num < bottleneck)
+                Console.WriteLine("bottleneck k: " + k);
+                if (k == -1)
                 {
-                    bottleneck = num;
+                    string nodename = path[i + 1].Replace("-", "");
+                    index = nodes.FindIndex(item => item.getNodeName() == nodename);
+                    Console.WriteLine("bottleneck index: " + index);
+                    int childIndex = nodes[index].children.FindIndex(item => item.getNodeName() == path[i]);
+                    int num2 = nodes[index].edges[childIndex][0];
+                    if (num2 < bottleneck)
+                    {
+                        bottleneck = num2;
+                    }
+                }
+                else
+                {
+
+                    string nodename = path[i].Replace("-", "");
+                    index = nodes.FindIndex(item => item.getNodeName() == nodename);
+                    Console.WriteLine("bottleneck index: " + index);
+                    int num = nodes[index].edges[k][1] - nodes[index].edges[k][0];
+                    Console.WriteLine("NODENAME: " + nodes[index].getNodeName());
+                    Console.WriteLine("NUM: " + num);
+                    if (num < bottleneck)
+                    {
+                        bottleneck = num;
+                    }
                 }
             }
             return bottleneck;
@@ -117,9 +177,31 @@ namespace testUI
         {
             for (int i = 0; i < path.Count - 1; i++)
             {
-                int index = nodes.FindIndex(item => item.getNodeName() == path[i].getNodeName());
+                Console.WriteLine("augmenting flow i: " + i);
+                int index;
                 int index2 = selectedChildIndexes[i];
-                nodes[index].edges[index2][0] += bottleneck;
+                if (index2 == -1)
+                {
+                    index = nodes.FindIndex(item => item.getNodeName() == path[i+1].Replace("-",""));
+                    Console.WriteLine("Next Node: " + nodes[index].getNodeName());
+                    index2 = nodes[index].children.FindIndex(item => item.getNodeName() == path[i]);
+                    Console.WriteLine("Current Node: " + nodes[index2].getNodeName());
+                    nodes[index].edges[index2][0] -= bottleneck;
+                }
+                else
+                {
+                   index = nodes.FindIndex(item => item.getNodeName() == path[i].Replace("-",""));
+                   nodes[index].edges[index2][0] += bottleneck;
+                }
+            }
+        }
+
+        public void resetDeadEnds()
+        {
+            for (int i=0; i<nodes.Count; i++)
+            {
+                nodes[i].deadEnds.Clear();
+                nodes[i].deadNeighbours.Clear();
             }
         }
 
@@ -133,155 +215,112 @@ namespace testUI
             {
                 Console.WriteLine();
                 Console.WriteLine("Delta: " + delta);
-                int ind = findMaxCapacityEdge();
-                path.Add(nodes[currentNodeIndex]);
-                Console.Write("Path: ");
-                for (int i=0; i<path.Count;i++)
-                {
-                    Console.Write(path[i].getNodeName() + " ");
-                }
-                Console.WriteLine();
+               
                 if (nodes[currentNodeIndex].getNodeType() != "finish")
                 {
+                    string strrr = "-" + nodes[currentNodeIndex].getNodeName();
+                    Console.WriteLine("strrr: " + strrr);
+                    if (path.Contains(nodes[currentNodeIndex].getNodeName()) == false && path.Contains(strrr)==false )
+                    { 
+                        ///Adding current node to the path.
+                        path.Add(nodes[currentNodeIndex].getNodeName());
+                    }
+                    string ind = findMaxCapacityEdge();
                     Console.WriteLine("node != finish && İND: " + ind);
-                    if (ind == -1)
+                    //path.FindIndex(item => item.getNodeName() == nodes[currentNodeIndex].getNodeName()) == -1
+                    //path.FindIndex(item => item.Contains(nodes[currentNodeIndex].getNodeName())) == -1
+                    
+                    Console.Write("Path: ");
+                    for (int i = 0; i < path.Count; i++)
                     {
-                        Console.WriteLine("İND == -1");
-                        Console.WriteLine("PATH COUNT: " + path.Count);
+                        Console.Write(path[i] + " ");
+                    }
+                    Console.WriteLine();
+                    ///////////////////////////////////////////7
+                    if (ind == "null")
+                    {
+                        //Check if currentIndexNode is a reverse direction node or a normal node
+                        Console.WriteLine("ind == null");
+                        int reverseNodeIndex = -4;
+                        int deadChild = -4;
+                        if (path[path.Count - 1].Contains("-"))
+                        {
+                             reverseNodeIndex = currentNodeIndex;
+                        }
+                        selectedChildIndexes.RemoveAt(path.Count - 1);
                         path.RemoveAt(path.Count - 1);
-                        Console.Write("Path 2 : ");
-                        for (int i = 0; i < path.Count; i++)
+                        
+                        if (path.Count > 0)
                         {
-                            Console.Write(path[i].getNodeName() + " ");
+                            deadChild = selectedChildIndexes[path.Count - 1];
+                            selectedChildIndexes.RemoveAt(selectedChildIndexes.Count - 1);
+                            currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1]);
+                            //selectedChildIndexes.RemoveAt(path.Count-1);
+                            if (deadChild == -1)
+                            {
+                                nodes[currentNodeIndex].deadNeighbours.Add(nodes[reverseNodeIndex].getNodeName());
+                            }
+                            else
+                            {
+                                nodes[currentNodeIndex].deadEnds.Add(deadChild);
+                            }
                         }
-                        if (path.Count == 0)
+                        else
                         {
-                            Console.WriteLine("DELTA/2");
                             delta = delta / 2;
                             selectedChildIndexes.Clear();
                             path.Clear();
+                            resetDeadEnds();
                             currentNodeIndex = 0;
-                        }else if (loopCounter > path.Count - 1)
-                        {
-                            delta = delta / 2;
-                            selectedChildIndexes.Clear();
-                            path.Clear();
-                            currentNodeIndex = 0;
-                            loopCounter = 0;
-                        }
+                        }                      
                     }
                     else
                     {
-                        loopCounter++;
-                        Console.WriteLine("PATH COUNT 2: " + path.Count);
-                        Console.WriteLine("Şimdiki düğüm: " + nodes[currentNodeIndex].getNodeName());
-                        Console.WriteLine("Gidilecek Düğüm: " + nodes[ind].getNodeName());
-                        currentNodeIndex = ind;
+                        int newInd = Int32.Parse(ind);
+                        //reverse direction
+                        if (newInd < 0)
+                        {
+                            int numb = -1 * newInd;
+                            string reverseDirection = "-"+nodes[numb].getNodeName();
+                            Console.WriteLine("Reverse Direction Node: " + reverseDirection);
+                            if (path.Contains(reverseDirection)==false)
+                            {
+                                path.Add(reverseDirection);
+                            }
+                            currentNodeIndex = numb;
+                            Console.WriteLine("Selected reverse direction. currentNodeIndex: " + currentNodeIndex);
+                        }
+                        else
+                        {
+                            Console.WriteLine("PATH COUNT 2: " + path.Count);
+                            Console.WriteLine("Şimdiki düğüm: " + nodes[currentNodeIndex].getNodeName());
+                            int num = Int32.Parse(ind);
+                            Console.WriteLine("Gidilecek Düğüm: " + nodes[num].getNodeName());
+                            currentNodeIndex = num;
+                        }
                     }
+                    /////////////////////////////////////////
                 }
                 else
                 {
+                    path.Add(nodes[currentNodeIndex].getNodeName());
+                    Console.Write("Path Final: ");
+                    for (int i = 0; i < path.Count; i++)
+                    {
+                        Console.Write(path[i] + " ");
+                    }
+                    Console.WriteLine();
                     int bottleneck = findBottleneck();
                     Console.WriteLine("BOTTLENECK: " + bottleneck);
+                    augmentTheFlow(bottleneck);
                     totalMaxFlow += bottleneck;
                     Console.WriteLine("TOTALMAXFLOW: " + totalMaxFlow);
-                    augmentTheFlow(bottleneck);
                     path.Clear();
                     selectedChildIndexes.Clear();
                     currentNodeIndex = 0;
                 }
             }
             Console.WriteLine("Max Flow: " + totalMaxFlow);
-        }
-
-        public void findPaths()
-        {
-            // nodes[currentNodeIndex] == current node
-            pathCounter = 0;
-            currentNodeIndex = 0;
-            path.Add(nodes[currentNodeIndex]);
-            while (path.Count > 0)
-            {
-                if (nodes[currentNodeIndex].getNodeType() != "finish")
-                {
-                    Console.WriteLine("--------------------------------------------------------------------------------------------");
-                    for (int b=0; b<path.Count; b++)
-                    {
-                        Console.Write( path[b].getNodeName().ToUpper() + " ");
-                    }
-                    Console.WriteLine("\n--------------------------------------------------------------------------------------------");
-                    
-                    Console.WriteLine("Current nodename:  " + nodes[currentNodeIndex].getNodeName()+ " children number: " + nodes[currentNodeIndex].children.Count);
-                    Console.WriteLine("CURRENT NODE INDEX:  " + currentNodeIndex);
-                    for (int i=0; i< nodes[currentNodeIndex].children.Count; i++ )
-                    {
-                        //nodes[currentNodeIndex].visitedNodes.FindIndex(item => item.getNodeName == nodes[currentNodeIndex].children)
-                        Console.WriteLine("+++++ "+nodes[currentNodeIndex].getNodeName() + " " + nodes[currentNodeIndex].children[i].getNodeName() + " " + nodes[currentNodeIndex].visitedNodes.Contains(nodes[currentNodeIndex].children[i]));
-                        if (!nodes[currentNodeIndex].visitedNodes.Contains(nodes[currentNodeIndex].children[i]))
-                        {
-                            nodes[currentNodeIndex].visitedNodes.Add(nodes[currentNodeIndex].children[i]);
-                            path.Add(nodes[currentNodeIndex].children[i]);
-                            string str = nodes[currentNodeIndex].children[i].getNodeName();
-                            Console.WriteLine();
-                            currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == str);
-                            Console.WriteLine("INDEX: " + currentNodeIndex);
-                            //nodes[currentNodeIndex].visitedNodes.FindIndex(item => item.getNodeName == nodes[currentNodeIndex].children)
-                            break;
-                        }else if (nodes[currentNodeIndex].visitedNodes.Count == nodes[currentNodeIndex].children.Count)
-                        {
-                            nodes[currentNodeIndex].visitedNodes.Clear();
-                            path.Remove(nodes[currentNodeIndex]);
-                            if ((path.Count-1) >= 0)
-                            {
-                                currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count-1].getNodeName());
-                                //currentNodeIndex = path.Count - 1;
-                                
-                            }
-                            else
-                            {
-                                //Finish searching for paths
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("CURRR " + nodes[currentNodeIndex].getNodeName());
-                    //path.Add(nodes[currentNodeIndex]);
-                    List<Node> list = new List<Node>(path);
-                    availablePaths.Add(pathCounter, list);
-                    pathCounter++;
-                    int x = path.Count -1 ;
-                    Console.WriteLine("x: " + x);
-                    Console.WriteLine("PATHLENGTH: " + path.Count);
-                    Console.WriteLine("Path: ");
-                    for (int i = 0; i < path.Count; i++)
-                    {
-                        Console.Write(i + " " + path[i].getNodeName() + " ");
-                    }
-                    path.RemoveAt(x);
-                    Console.WriteLine();
-                    currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1].getNodeName());
-                    Console.WriteLine("indeddddd: " +  currentNodeIndex);
-                    Console.WriteLine("brrrrrrrr: " + nodes[currentNodeIndex].getNodeName());
-                    //currentNodeIndex = path.Count - 1;
-                }
-            }
-            //Console.WriteLine("Current node: " + currentNode.getNodeName() + ", capacity:" + currentNode.getNodeCapacity() + ", current flow:" + currentNode.getNodeCurrentFlow());
-            //path.Add();
-            
-            //PRINT FOUND PATHS
-            for (int i=0; i<availablePaths.Count;i++)
-            {
-                //Console.WriteLine("PATH "+ i +":");
-                for (int j=0; j<availablePaths[i].Count; j++)
-                {
-                    Console.Write(availablePaths[i][j].getNodeName() + " ");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("YOLLAR BULUNDU!");
         }
 
         public void printObjectAttributes()
@@ -301,9 +340,9 @@ namespace testUI
         {
             string nodeN = newNodeNameTextBox.Text;
 
-            bool check = nodeN.Any(x => char.IsLetter(x));
-            if (check)
-            {
+           // bool check = nodeN.Any(x => char.IsLetter(x));
+            //if (check)
+            //{
                 if (nodeDropDown.Items.Count != 0)
                 {
                     nodeDropDown.Items[nodeDropDown.SelectedIndex] = nodeN;
@@ -324,11 +363,11 @@ namespace testUI
                     MessageBox.Show("Önce düğüm sayısını belirleyin!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
-            }
-            else
-            {
-                MessageBox.Show("Lütfen bir harf kullanarak isim belirleyiniz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Lütfen bir harf kullanarak isim belirleyiniz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //}
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -518,6 +557,13 @@ namespace testUI
             else
             {
                 nodes[nodeDropDown.SelectedIndex].addChildNode(nodes[addChildNodeDropDown.SelectedIndex + 1]);
+                nodes[addChildNodeDropDown.SelectedIndex + 1].neighbours.Add(nodes[nodeDropDown.SelectedIndex].getNodeName());
+                Console.WriteLine("Eklenilen çocuk düğüme ulaşan düğümler: ");
+                for (int i=0; i< nodes[addChildNodeDropDown.SelectedIndex + 1].neighbours.Count;i++)
+                {
+                    Console.Write(nodes[addChildNodeDropDown.SelectedIndex + 1].neighbours[i] + " ");
+                }
+                Console.WriteLine();
                 string dlg = addChildNodeDropDown.Items[addChildNodeDropDown.SelectedIndex].ToString();
                 Console.WriteLine("dlg: " + dlg);
                 int childNode = nodes[nodeDropDown.SelectedIndex].children.FindIndex(item => item.getNodeName() == dlg);
@@ -590,3 +636,177 @@ namespace testUI
         }
     }
 }
+
+/*
+public void findPaths()
+{
+    // nodes[currentNodeIndex] == current node
+    pathCounter = 0;
+    currentNodeIndex = 0;
+    path.Add(nodes[currentNodeIndex].getNodeName());
+    while (path.Count > 0)
+    {
+        if (nodes[currentNodeIndex].getNodeType() != "finish")
+        {
+            Console.WriteLine("--------------------------------------------------------------------------------------------");
+            for (int b = 0; b < path.Count; b++)
+            {
+                Console.Write(path[b].ToUpper() + " ");
+            }
+            Console.WriteLine("\n--------------------------------------------------------------------------------------------");
+
+            Console.WriteLine("Current nodename:  " + nodes[currentNodeIndex].getNodeName() + " children number: " + nodes[currentNodeIndex].children.Count);
+            Console.WriteLine("CURRENT NODE INDEX:  " + currentNodeIndex);
+            for (int i = 0; i < nodes[currentNodeIndex].children.Count; i++)
+            {
+                //nodes[currentNodeIndex].visitedNodes.FindIndex(item => item.getNodeName == nodes[currentNodeIndex].children)
+                Console.WriteLine("+++++ " + nodes[currentNodeIndex].getNodeName() + " " + nodes[currentNodeIndex].children[i].getNodeName() + " " + nodes[currentNodeIndex].visitedNodes.Contains(nodes[currentNodeIndex].children[i]));
+                if (!nodes[currentNodeIndex].visitedNodes.Contains(nodes[currentNodeIndex].children[i]))
+                {
+                    nodes[currentNodeIndex].visitedNodes.Add(nodes[currentNodeIndex].children[i]);
+                    path.Add(nodes[currentNodeIndex].children[i].getNodeName());
+                    string str = nodes[currentNodeIndex].children[i].getNodeName();
+                    Console.WriteLine();
+                    currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == str);
+                    Console.WriteLine("INDEX: " + currentNodeIndex);
+                    //nodes[currentNodeIndex].visitedNodes.FindIndex(item => item.getNodeName == nodes[currentNodeIndex].children)
+                    break;
+                }
+                else if (nodes[currentNodeIndex].visitedNodes.Count == nodes[currentNodeIndex].children.Count)
+                {
+                    nodes[currentNodeIndex].visitedNodes.Clear();
+                    path.Remove(nodes[currentNodeIndex].getNodeName());
+                    if ((path.Count - 1) >= 0)
+                    {
+                        currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1]);
+                        //currentNodeIndex = path.Count - 1;
+
+                    }
+                    else
+                    {
+                        //Finish searching for paths
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("CURRR " + nodes[currentNodeIndex].getNodeName());
+            //path.Add(nodes[currentNodeIndex]);
+            //List<Node> list = new List<Node>(path);
+            //availablePaths.Add(pathCounter, list);
+            pathCounter++;
+            int x = path.Count - 1;
+            Console.WriteLine("x: " + x);
+            Console.WriteLine("PATHLENGTH: " + path.Count);
+            Console.WriteLine("Path: ");
+            for (int i = 0; i < path.Count; i++)
+            {
+                Console.Write(i + " " + path[i] + " ");
+            }
+            path.RemoveAt(x);
+            Console.WriteLine();
+            currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1]);
+            Console.WriteLine("indeddddd: " + currentNodeIndex);
+            Console.WriteLine("brrrrrrrr: " + nodes[currentNodeIndex].getNodeName());
+            //currentNodeIndex = path.Count - 1;
+        }
+    }
+    //Console.WriteLine("Current node: " + currentNode.getNodeName() + ", capacity:" + currentNode.getNodeCapacity() + ", current flow:" + currentNode.getNodeCurrentFlow());
+    //path.Add();
+
+    //PRINT FOUND PATHS
+    for (int i = 0; i < availablePaths.Count; i++)
+    {
+        //Console.WriteLine("PATH "+ i +":");
+        for (int j = 0; j < availablePaths[i].Count; j++)
+        {
+            Console.Write(availablePaths[i][j].getNodeName() + " ");
+        }
+        Console.WriteLine();
+    }
+    Console.WriteLine("YOLLAR BULUNDU!");
+}-------------------------------------------------------*/
+
+//else if (loopCounter > path.Count - 1)
+//{
+// delta = delta / 2;
+// selectedChildIndexes.Clear();
+// path.Clear();
+// currentNodeIndex = 0;
+// loopCounter = 0;
+//}
+
+//if (path[path.Count-1].Contains("-"))
+//{
+//this node is a reverse direction node 
+//  int reverseNodeIndex = currentNodeIndex;
+//  path.RemoveAt(path.Count - 1 );
+// if (path.Count > 0 )
+// {
+//   currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1]);
+//    nodes[currentNodeIndex].deadNeighbours.Add(nodes[reverseNodeIndex].getNodeName());
+// }
+// else
+// {
+//     
+//   }
+//}
+//else
+//{
+// int deadChild = selectedChildIndexes[path.Count - 1];
+// path.RemoveAt(path.Count - 1);
+// if(path.Count > 0)
+// {
+//      currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1]);
+
+//   }
+//}
+/*
+    if (ind == -1)
+                    {
+                        Console.WriteLine("İND == -1");
+                        Console.WriteLine("PATH COUNT: " + path.Count);
+                        //int lastPathIndex = path.Count - 1;
+                        //path.RemoveAt(path.Count - 1);
+                        Console.Write("Path 2 : ");
+                        for (int i = 0; i<path.Count; i++)
+                        {
+                            Console.Write(path[i] + " ");
+                        }
+                        if (selectedChildIndexes.Count == 0)
+                        {
+                            Console.WriteLine("DELTA/2");
+                            delta = delta / 2;
+                            selectedChildIndexes.Clear();
+                            path.Clear();
+                            resetDeadEnds();
+currentNodeIndex = 0;
+                            //loopCounter = 0;
+                        }
+                        else
+                        {
+                            string lastNodeName = path[path.Count - 1];
+//int deadEndIndex = selectedChildIndexes[lastNodeIndex];
+Console.WriteLine("selectedChildIndexes Count: " + selectedChildIndexes.Count);
+                            selectedChildIndexes.RemoveAt(selectedChildIndexes.Count - 1);
+                            path.RemoveAt(path.Count - 1);
+                            string nodeName = path[path.Count - 1];
+//currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1].getNodeName());
+currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == nodeName);
+                            int dead = nodes[currentNodeIndex].children.FindIndex(item => item.getNodeName() == lastNodeName);
+nodes[currentNodeIndex].deadEnds.Add(dead);
+                            
+                        }
+                    }
+                    else
+                    {
+                        //loopCounter++;
+                        //Console.WriteLine("loopCounter: " + loopCounter);
+                        Console.WriteLine("PATH COUNT 2: " + path.Count);
+                        Console.WriteLine("Şimdiki düğüm: " + nodes[currentNodeIndex].getNodeName());
+                        Console.WriteLine("Gidilecek Düğüm: " + nodes[ind].getNodeName());
+                        currentNodeIndex = ind;
+                    }
+*/
