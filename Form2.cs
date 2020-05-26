@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
-
+using Microsoft.Msagl.GraphViewerGdi;
+using Microsoft.Msagl.Drawing;
 namespace testUI
 {
     public partial class Form2 : Form
@@ -23,7 +24,7 @@ namespace testUI
         public int delta;
         public int totalMaxFlow;
         public int loopCounter = 0;
-        
+        public string numberString;
         public Form2()
         {
             InitializeComponent();
@@ -322,6 +323,7 @@ namespace testUI
             }
             Console.WriteLine("Max Flow: " + totalMaxFlow);
         }
+      
 
         public void printObjectAttributes()
         {
@@ -444,15 +446,13 @@ namespace testUI
         {
 
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             //Regex regex = new Regex(@"[\! \# \$ \% \& \' \( \) \* \+ \, \- \. \: \; \< \= \> \? \@ \[ \] \^  \` \{ \| \} \~ /ö/ü/Ö/ÜA-Za-z]");
             //Match match = regex.Match(numberString);
             //string cap = nodeCapacityTextBox.Text;
-            //!match.Success && numberString.Length > 0
-            
-            string numberString = nodeNumberInput.Text;
+            //!match.Success && numberString.Length > 0              
+           numberString = nodeNumberInput.Text;
             int numberOfNodes = 0;
             bool check = numberString.Any(x => char.IsLetter(x));
            
@@ -477,8 +477,43 @@ namespace testUI
                 }
             }
         }
+        public void drawGraph()
+        {
+            //create a form 
+            System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+         
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                Console.WriteLine("i:" + i);
+                Console.WriteLine("children count: " + nodes[i].children.Count);
+                for (int j = 0; j < nodes[i].children.Count; j++)
+                {
+                    Console.WriteLine("j:" + j);
+                    Console.WriteLine("Parent node: " + nodes[i].getNodeName());
+                    Console.WriteLine("node name: "+ nodes[i].children[j].getNodeName());
+                    var newEdge = graph.AddEdge(nodes[i].getNodeName() , nodes[i].children[j].getNodeName());
+                    Microsoft.Msagl.Drawing.Node childNode = graph.FindNode(nodes[i].children[j].getNodeName());
+                   
+                    childNode.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Circle;
+                    childNode.Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
+                    newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                    string cap = nodes[i].edges[j][0].ToString() + "/" + nodes[i].edges[j][1].ToString();
+                    newEdge.LabelText = cap;
+                }
+             
+            }
 
-       
+            viewer.Graph = graph;
+            form.SuspendLayout();
+            viewer.CurrentLayoutMethod = LayoutMethod.MDS;
+            form.Controls.Add(viewer);
+            form.ResumeLayout();
+            //show the form 
+            form.ShowDialog();
+        }
+
 
         private void nodePanel_Paint(object sender, PaintEventArgs e)
         {
@@ -499,6 +534,7 @@ namespace testUI
 
         private void button3_Click_1(object sender, EventArgs e)
         {
+            /*
             //Change node capacity
             string cap = nodeCapacityTextBox.Text;
             bool check = cap.Any(x => char.IsLetter(x));
@@ -534,7 +570,7 @@ namespace testUI
                         MessageBox.Show("Lütfen düğüm sayısını belirtin daha sonra düğümün kapasitesini değiştirin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
-            }
+            }*/
         }
 
         public void printChildren()
@@ -585,6 +621,7 @@ namespace testUI
             //printChildren();
             //findPaths();
             findMaxFlow();
+            drawGraph();
         }
 
         //Set capacity of the edge
@@ -633,6 +670,16 @@ namespace testUI
                 }
                 Console.WriteLine();
             }
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            drawGraph();
         }
     }
 }

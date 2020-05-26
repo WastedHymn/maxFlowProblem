@@ -37,9 +37,6 @@
             this.setEdgeCapacityTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.nodeCapacityTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.addChildNodeButton = new System.Windows.Forms.Button();
             this.nodeSettingsLabel = new System.Windows.Forms.Label();
             this.selectANodeLabel = new System.Windows.Forms.Label();
@@ -51,6 +48,8 @@
             this.nodeDropDown = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.nodePanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -58,7 +57,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Font = new System.Drawing.Font("Roboto Black", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.button1.Location = new System.Drawing.Point(703, 26);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 30);
@@ -105,13 +104,12 @@
             // nodePanel
             // 
             this.nodePanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.nodePanel.Controls.Add(this.button5);
+            this.nodePanel.Controls.Add(this.label1);
             this.nodePanel.Controls.Add(this.setEdgeCapacityButton);
             this.nodePanel.Controls.Add(this.setEdgeCapacityTextBox);
             this.nodePanel.Controls.Add(this.label2);
             this.nodePanel.Controls.Add(this.button4);
-            this.nodePanel.Controls.Add(this.button3);
-            this.nodePanel.Controls.Add(this.nodeCapacityTextBox);
-            this.nodePanel.Controls.Add(this.label1);
             this.nodePanel.Controls.Add(this.addChildNodeButton);
             this.nodePanel.Controls.Add(this.nodeSettingsLabel);
             this.nodePanel.Controls.Add(this.selectANodeLabel);
@@ -131,7 +129,7 @@
             // 
             this.setEdgeCapacityButton.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.setEdgeCapacityButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.setEdgeCapacityButton.Location = new System.Drawing.Point(66, 467);
+            this.setEdgeCapacityButton.Location = new System.Drawing.Point(57, 401);
             this.setEdgeCapacityButton.Name = "setEdgeCapacityButton";
             this.setEdgeCapacityButton.Size = new System.Drawing.Size(113, 23);
             this.setEdgeCapacityButton.TabIndex = 16;
@@ -141,7 +139,7 @@
             // 
             // setEdgeCapacityTextBox
             // 
-            this.setEdgeCapacityTextBox.Location = new System.Drawing.Point(59, 440);
+            this.setEdgeCapacityTextBox.Location = new System.Drawing.Point(54, 363);
             this.setEdgeCapacityTextBox.Name = "setEdgeCapacityTextBox";
             this.setEdgeCapacityTextBox.Size = new System.Drawing.Size(129, 20);
             this.setEdgeCapacityTextBox.TabIndex = 15;
@@ -151,7 +149,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label2.ForeColor = System.Drawing.Color.Orange;
-            this.label2.Location = new System.Drawing.Point(2, 389);
+            this.label2.Location = new System.Drawing.Point(2, 309);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(248, 39);
             this.label2.TabIndex = 14;
@@ -160,7 +158,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(57, 534);
+            this.button4.Location = new System.Drawing.Point(57, 519);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(122, 23);
             this.button4.TabIndex = 13;
@@ -168,45 +166,13 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SeaShell;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(75, 242);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(96, 23);
-            this.button3.TabIndex = 12;
-            this.button3.Text = "Kapasite Değiştir";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click_1);
-            // 
-            // nodeCapacityTextBox
-            // 
-            this.nodeCapacityTextBox.Location = new System.Drawing.Point(59, 216);
-            this.nodeCapacityTextBox.Name = "nodeCapacityTextBox";
-            this.nodeCapacityTextBox.Size = new System.Drawing.Size(129, 20);
-            this.nodeCapacityTextBox.TabIndex = 11;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.ForeColor = System.Drawing.Color.Orange;
-            this.label1.Location = new System.Drawing.Point(39, 197);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(167, 16);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Düğüm Akış Kapasitesi";
-            // 
             // addChildNodeButton
             // 
             this.addChildNodeButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.addChildNodeButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.addChildNodeButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SeaShell;
             this.addChildNodeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addChildNodeButton.Location = new System.Drawing.Point(65, 337);
+            this.addChildNodeButton.Location = new System.Drawing.Point(66, 283);
             this.addChildNodeButton.Name = "addChildNodeButton";
             this.addChildNodeButton.Size = new System.Drawing.Size(114, 23);
             this.addChildNodeButton.TabIndex = 9;
@@ -217,11 +183,11 @@
             // nodeSettingsLabel
             // 
             this.nodeSettingsLabel.AutoSize = true;
-            this.nodeSettingsLabel.Font = new System.Drawing.Font("Roboto Black", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.nodeSettingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.nodeSettingsLabel.ForeColor = System.Drawing.Color.Crimson;
             this.nodeSettingsLabel.Location = new System.Drawing.Point(52, 9);
             this.nodeSettingsLabel.Name = "nodeSettingsLabel";
-            this.nodeSettingsLabel.Size = new System.Drawing.Size(159, 25);
+            this.nodeSettingsLabel.Size = new System.Drawing.Size(173, 25);
             this.nodeSettingsLabel.TabIndex = 8;
             this.nodeSettingsLabel.Text = "Düğüm Ayarları";
             // 
@@ -241,7 +207,7 @@
             this.addChildToTheNodeLabel.AutoSize = true;
             this.addChildToTheNodeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.addChildToTheNodeLabel.ForeColor = System.Drawing.Color.Orange;
-            this.addChildToTheNodeLabel.Location = new System.Drawing.Point(56, 291);
+            this.addChildToTheNodeLabel.Location = new System.Drawing.Point(54, 201);
             this.addChildToTheNodeLabel.Name = "addChildToTheNodeLabel";
             this.addChildToTheNodeLabel.Size = new System.Drawing.Size(134, 16);
             this.addChildToTheNodeLabel.TabIndex = 6;
@@ -251,7 +217,7 @@
             // addChildNodeDropDown
             // 
             this.addChildNodeDropDown.FormattingEnabled = true;
-            this.addChildNodeDropDown.Location = new System.Drawing.Point(52, 310);
+            this.addChildNodeDropDown.Location = new System.Drawing.Point(54, 244);
             this.addChildNodeDropDown.Name = "addChildNodeDropDown";
             this.addChildNodeDropDown.Size = new System.Drawing.Size(146, 21);
             this.addChildNodeDropDown.TabIndex = 5;
@@ -302,10 +268,10 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Roboto Black", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label3.Location = new System.Drawing.Point(34, 27);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(254, 29);
+            this.label3.Size = new System.Drawing.Size(282, 29);
             this.label3.TabIndex = 5;
             this.label3.Text = "AKIŞ GRAFI OLUŞTUR";
             // 
@@ -320,6 +286,25 @@
             this.panel1.Size = new System.Drawing.Size(254, 73);
             this.panel1.TabIndex = 6;
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(66, 475);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(107, 27);
+            this.button5.TabIndex = 7;
+            this.button5.Text = "Çiz";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click_1);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(87, 446);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(44, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Graf Çiz";
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -332,6 +317,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form2";
             this.Text = "Form2";
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.nodePanel.ResumeLayout(false);
             this.nodePanel.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -359,12 +345,11 @@
         private System.Windows.Forms.Button addChildNodeButton;
         private System.Windows.Forms.Label nodeSettingsLabel;
         private System.Windows.Forms.Label selectANodeLabel;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox nodeCapacityTextBox;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button setEdgeCapacityButton;
         private System.Windows.Forms.TextBox setEdgeCapacityTextBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label1;
     }
 }
