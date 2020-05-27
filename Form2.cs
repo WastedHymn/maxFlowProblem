@@ -17,6 +17,7 @@ namespace testUI
         public List<string> path = new List<string>();
         public List<Node> nodes = new List<Node>();
         public List<int> selectedChildIndexes = new List<int>();
+        public List<List<string>> pathList = new List<List<string>>();
         public Dictionary<int, List<Node>> availablePaths = new Dictionary<int, List<Node>>();
         public int pathCounter = 0;
         public Node startNode;
@@ -306,6 +307,7 @@ namespace testUI
                 {
                     path.Add(nodes[currentNodeIndex].getNodeName());
                     Console.Write("Path Final: ");
+                    pathList.Add(path);
                     for (int i = 0; i < path.Count; i++)
                     {
                         Console.Write(path[i] + " ");
@@ -493,14 +495,26 @@ namespace testUI
                     Console.WriteLine("j:" + j);
                     Console.WriteLine("Parent node: " + nodes[i].getNodeName());
                     Console.WriteLine("node name: "+ nodes[i].children[j].getNodeName());
-                    var newEdge = graph.AddEdge(nodes[i].getNodeName() , nodes[i].children[j].getNodeName());
-                    Microsoft.Msagl.Drawing.Node childNode = graph.FindNode(nodes[i].children[j].getNodeName());
-                   
-                    childNode.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Circle;
-                    childNode.Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
-                    newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                    int flow = nodes[i].edges[j][0];
+                    var newEdge = graph.AddEdge(nodes[i].getNodeName(), nodes[i].children[j].getNodeName());
+                    Microsoft.Msagl.Drawing.Node childNode = graph.FindNode(nodes[i].getNodeName());
                     string cap = nodes[i].edges[j][0].ToString() + "/" + nodes[i].edges[j][1].ToString();
                     newEdge.LabelText = cap;
+                    childNode.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Circle;
+                    childNode.Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
+                    if (flow > 0)
+                    {
+                        newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Orange;
+                    }
+                    else
+                    {
+                        newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
+                    }
+                    //graph.AddEdge(nodes[i].getNodeName(), nodes[i].children[j].getNodeName()).Attr.Color = Microsoft.Msagl.Drawing.Color.DarkGreen;
+                    
+                    //newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                    //string cap = nodes[i].edges[j][0].ToString() + "/" + nodes[i].edges[j][1].ToString();
+                    //newEdge.LabelText = cap;
                 }
              
             }
