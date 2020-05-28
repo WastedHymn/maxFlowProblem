@@ -33,6 +33,8 @@
             this.nodeNumberLabel = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.nodePanel = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.setEdgeCapacityButton = new System.Windows.Forms.Button();
             this.setEdgeCapacityTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -48,8 +50,6 @@
             this.nodeDropDown = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button5 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.nodePanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -119,17 +119,42 @@
             this.nodePanel.Controls.Add(this.newNodeNameTextBox);
             this.nodePanel.Controls.Add(this.newNodeNameLabel);
             this.nodePanel.Controls.Add(this.nodeDropDown);
-            this.nodePanel.Location = new System.Drawing.Point(34, 138);
+            this.nodePanel.Location = new System.Drawing.Point(239, 138);
             this.nodePanel.Name = "nodePanel";
             this.nodePanel.Size = new System.Drawing.Size(254, 569);
             this.nodePanel.TabIndex = 4;
             this.nodePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.nodePanel_Paint);
             // 
+            // button5
+            // 
+            this.button5.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.button5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.Location = new System.Drawing.Point(65, 440);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(114, 27);
+            this.button5.TabIndex = 7;
+            this.button5.Text = "Çiz";
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Click += new System.EventHandler(this.button5_Click_1);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label1.ForeColor = System.Drawing.Color.Orange;
+            this.label1.Location = new System.Drawing.Point(86, 417);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(75, 20);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Graf Çiz";
+            // 
             // setEdgeCapacityButton
             // 
             this.setEdgeCapacityButton.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.setEdgeCapacityButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.setEdgeCapacityButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.setEdgeCapacityButton.Location = new System.Drawing.Point(57, 401);
+            this.setEdgeCapacityButton.Location = new System.Drawing.Point(66, 365);
             this.setEdgeCapacityButton.Name = "setEdgeCapacityButton";
             this.setEdgeCapacityButton.Size = new System.Drawing.Size(113, 23);
             this.setEdgeCapacityButton.TabIndex = 16;
@@ -139,9 +164,9 @@
             // 
             // setEdgeCapacityTextBox
             // 
-            this.setEdgeCapacityTextBox.Location = new System.Drawing.Point(54, 363);
+            this.setEdgeCapacityTextBox.Location = new System.Drawing.Point(54, 339);
             this.setEdgeCapacityTextBox.Name = "setEdgeCapacityTextBox";
-            this.setEdgeCapacityTextBox.Size = new System.Drawing.Size(129, 20);
+            this.setEdgeCapacityTextBox.Size = new System.Drawing.Size(146, 20);
             this.setEdgeCapacityTextBox.TabIndex = 15;
             // 
             // label2
@@ -149,7 +174,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label2.ForeColor = System.Drawing.Color.Orange;
-            this.label2.Location = new System.Drawing.Point(2, 309);
+            this.label2.Location = new System.Drawing.Point(3, 297);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(248, 39);
             this.label2.TabIndex = 14;
@@ -158,21 +183,25 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(57, 519);
+            this.button4.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.button4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Location = new System.Drawing.Point(65, 505);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(122, 23);
+            this.button4.Size = new System.Drawing.Size(114, 23);
             this.button4.TabIndex = 13;
-            this.button4.Text = "Yolları Bul";
-            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Text = "Max. Akış Bul\r\n";
+            this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // addChildNodeButton
             // 
             this.addChildNodeButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.addChildNodeButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.addChildNodeButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.addChildNodeButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SeaShell;
             this.addChildNodeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addChildNodeButton.Location = new System.Drawing.Point(66, 283);
+            this.addChildNodeButton.Location = new System.Drawing.Point(65, 247);
             this.addChildNodeButton.Name = "addChildNodeButton";
             this.addChildNodeButton.Size = new System.Drawing.Size(114, 23);
             this.addChildNodeButton.TabIndex = 9;
@@ -217,7 +246,7 @@
             // addChildNodeDropDown
             // 
             this.addChildNodeDropDown.FormattingEnabled = true;
-            this.addChildNodeDropDown.Location = new System.Drawing.Point(54, 244);
+            this.addChildNodeDropDown.Location = new System.Drawing.Point(54, 220);
             this.addChildNodeDropDown.Name = "addChildNodeDropDown";
             this.addChildNodeDropDown.Size = new System.Drawing.Size(146, 21);
             this.addChildNodeDropDown.TabIndex = 5;
@@ -229,7 +258,7 @@
             this.updateNodeNameButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.updateNodeNameButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SeaShell;
             this.updateNodeNameButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.updateNodeNameButton.Location = new System.Drawing.Point(65, 140);
+            this.updateNodeNameButton.Location = new System.Drawing.Point(65, 153);
             this.updateNodeNameButton.Name = "updateNodeNameButton";
             this.updateNodeNameButton.Size = new System.Drawing.Size(114, 23);
             this.updateNodeNameButton.TabIndex = 3;
@@ -239,7 +268,7 @@
             // 
             // newNodeNameTextBox
             // 
-            this.newNodeNameTextBox.Location = new System.Drawing.Point(167, 114);
+            this.newNodeNameTextBox.Location = new System.Drawing.Point(103, 127);
             this.newNodeNameTextBox.Name = "newNodeNameTextBox";
             this.newNodeNameTextBox.Size = new System.Drawing.Size(33, 20);
             this.newNodeNameTextBox.TabIndex = 2;
@@ -249,11 +278,11 @@
             this.newNodeNameLabel.AutoSize = true;
             this.newNodeNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.newNodeNameLabel.ForeColor = System.Drawing.Color.Orange;
-            this.newNodeNameLabel.Location = new System.Drawing.Point(39, 115);
+            this.newNodeNameLabel.Location = new System.Drawing.Point(63, 108);
             this.newNodeNameLabel.Name = "newNodeNameLabel";
-            this.newNodeNameLabel.Size = new System.Drawing.Size(122, 16);
+            this.newNodeNameLabel.Size = new System.Drawing.Size(118, 16);
             this.newNodeNameLabel.TabIndex = 1;
-            this.newNodeNameLabel.Text = "Yeni Düğüm Adı:";
+            this.newNodeNameLabel.Text = "Yeni Düğüm Adı";
             // 
             // nodeDropDown
             // 
@@ -268,10 +297,10 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label3.Location = new System.Drawing.Point(34, 27);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label3.Location = new System.Drawing.Point(240, 31);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(282, 29);
+            this.label3.Size = new System.Drawing.Size(252, 25);
             this.label3.TabIndex = 5;
             this.label3.Text = "AKIŞ GRAFI OLUŞTUR";
             // 
@@ -281,29 +310,10 @@
             this.panel1.Controls.Add(this.nodeNumberLabel);
             this.panel1.Controls.Add(this.nodeNumberInput);
             this.panel1.Controls.Add(this.button2);
-            this.panel1.Location = new System.Drawing.Point(34, 59);
+            this.panel1.Location = new System.Drawing.Point(239, 59);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(254, 73);
             this.panel1.TabIndex = 6;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(66, 475);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(107, 27);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Çiz";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click_1);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(87, 446);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
-            this.label1.TabIndex = 17;
-            this.label1.Text = "Graf Çiz";
             // 
             // Form2
             // 
