@@ -50,19 +50,28 @@
             this.nodeDropDown = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.childrenInfos = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.orderedPathInfo = new System.Windows.Forms.Label();
             this.nodePanel.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button1.Location = new System.Drawing.Point(703, 26);
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.button1.Location = new System.Drawing.Point(767, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 30);
+            this.button1.Size = new System.Drawing.Size(29, 25);
             this.button1.TabIndex = 0;
             this.button1.Text = "X";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -97,7 +106,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(113, 23);
             this.button2.TabIndex = 3;
-            this.button2.Text = "Düğüm Sayısı Belirle";
+            this.button2.Text = "Düğümleri Oluştur";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -119,7 +128,7 @@
             this.nodePanel.Controls.Add(this.newNodeNameTextBox);
             this.nodePanel.Controls.Add(this.newNodeNameLabel);
             this.nodePanel.Controls.Add(this.nodeDropDown);
-            this.nodePanel.Location = new System.Drawing.Point(239, 138);
+            this.nodePanel.Location = new System.Drawing.Point(11, 154);
             this.nodePanel.Name = "nodePanel";
             this.nodePanel.Size = new System.Drawing.Size(254, 569);
             this.nodePanel.TabIndex = 4;
@@ -298,7 +307,8 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label3.Location = new System.Drawing.Point(240, 31);
+            this.label3.ForeColor = System.Drawing.Color.Crimson;
+            this.label3.Location = new System.Drawing.Point(12, 47);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(252, 25);
             this.label3.TabIndex = 5;
@@ -310,16 +320,82 @@
             this.panel1.Controls.Add(this.nodeNumberLabel);
             this.panel1.Controls.Add(this.nodeNumberInput);
             this.panel1.Controls.Add(this.button2);
-            this.panel1.Location = new System.Drawing.Point(239, 59);
+            this.panel1.Location = new System.Drawing.Point(11, 75);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(254, 73);
             this.panel1.TabIndex = 6;
+            // 
+            // childrenInfos
+            // 
+            this.childrenInfos.AutoEllipsis = true;
+            this.childrenInfos.AutoSize = true;
+            this.childrenInfos.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.childrenInfos.Location = new System.Drawing.Point(3, 9);
+            this.childrenInfos.Name = "childrenInfos";
+            this.childrenInfos.Size = new System.Drawing.Size(163, 16);
+            this.childrenInfos.TabIndex = 7;
+            this.childrenInfos.Text = "Düğümleri oluşturunuz.\r\n";
+            this.childrenInfos.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label4.ForeColor = System.Drawing.Color.Crimson;
+            this.label4.Location = new System.Drawing.Point(493, 401);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(128, 24);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "GRAF ÖZET\r\n";
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel2.Controls.Add(this.orderedPathInfo);
+            this.panel2.Location = new System.Drawing.Point(268, 75);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(528, 282);
+            this.panel2.TabIndex = 9;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel3.Controls.Add(this.childrenInfos);
+            this.panel3.Location = new System.Drawing.Point(268, 428);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(528, 295);
+            this.panel3.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label5.ForeColor = System.Drawing.Color.Crimson;
+            this.label5.Location = new System.Drawing.Point(463, 47);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(174, 24);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "GİDİLEN YOLLAR";
+            // 
+            // orderedPathInfo
+            // 
+            this.orderedPathInfo.AutoSize = true;
+            this.orderedPathInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.orderedPathInfo.Location = new System.Drawing.Point(3, 9);
+            this.orderedPathInfo.Name = "orderedPathInfo";
+            this.orderedPathInfo.Size = new System.Drawing.Size(137, 16);
+            this.orderedPathInfo.TabIndex = 0;
+            this.orderedPathInfo.Text = "Max. akışı bulunuz.";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(808, 729);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.nodePanel);
@@ -332,6 +408,10 @@
             this.nodePanel.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -361,5 +441,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label childrenInfos;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label orderedPathInfo;
+        private System.Windows.Forms.Label label5;
     }
 }

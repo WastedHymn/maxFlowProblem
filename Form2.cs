@@ -16,8 +16,13 @@ namespace testUI
     {
         public List<string> path = new List<string>();
         public List<Node> nodes = new List<Node>();
+        public List<Node> nodes2;
         public List<int> selectedChildIndexes = new List<int>();
+        //public List<List<string>> bottleneckList = new List<List<string>>();
+        public Dictionary<string, int> bottlenecks = new Dictionary<string, int>();
+        public Dictionary<string, int> orderedBottlenecks = new Dictionary<string, int>();
         public List<List<string>> pathList = new List<List<string>>();
+        public List<int> bottleneckValues = new List<int>();
         public Dictionary<int, List<Node>> availablePaths = new Dictionary<int, List<Node>>();
         public int pathCounter = 0;
         public Node startNode;
@@ -137,6 +142,8 @@ namespace testUI
             //int startBottleneckIndex = selectedChildIndexes[0];
             int bottleneck = 1000000000;
             Console.WriteLine("BOTTLENECK START VALUE: " + bottleneck);
+            List<string> templist = new List<string>();
+            string bottlenecknodes = "";
             //Console.Write("selectedChildIndexes: ");
             Console.WriteLine();
             for (int i = 0; i < path.Count - 1; i++)
@@ -156,6 +163,9 @@ namespace testUI
                     if (num2 < bottleneck)
                     {
                         bottleneck = num2;
+                        bottlenecknodes = path[i] + "," + path[i + 1];
+                        //templist.Add(path[i]);
+                        //templist.Add(path[i+1]);
                     }
                 }
                 else
@@ -170,9 +180,26 @@ namespace testUI
                     if (num < bottleneck)
                     {
                         bottleneck = num;
+                        bottlenecknodes = path[i] + "," + path[i + 1];
                     }
                 }
             }
+            
+            if (!bottlenecks.ContainsKey(bottlenecknodes))
+            {
+                bottlenecks.Add(bottlenecknodes, 1);
+                Console.WriteLine("Bottleneck Node: " + bottlenecknodes);
+                Console.WriteLine("Bottleneck Node Count" + bottlenecks[bottlenecknodes]);
+            }
+            else
+            {
+                Console.WriteLine("Bottleneck Node: " + bottlenecknodes);
+                Console.WriteLine("Old Bottleneck Node Count" + bottlenecks[bottlenecknodes]);
+                int tempval = bottlenecks[bottlenecknodes]++;
+                bottlenecks[bottlenecknodes] = tempval;
+                Console.WriteLine("New Node Count" + bottlenecks[bottlenecknodes]);
+            }
+            bottleneckValues.Add(bottleneck);
             return bottleneck;
         }
 
@@ -196,6 +223,51 @@ namespace testUI
                    index = nodes.FindIndex(item => item.getNodeName() == path[i].Replace("-",""));
                    nodes[index].edges[index2][0] += bottleneck;
                 }
+            }
+        }
+
+        public void minCutFunc()
+        {
+            int dicLen = bottlenecks.Count;
+            string dicKey = "";
+            int max = 0;
+            //sort the list
+
+            while (bottlenecks.Count > 0)
+            {
+                foreach (KeyValuePair<string, int> val in bottlenecks)
+                {
+                    if (val.Value > max)
+                    {
+                        max = val.Value;
+                        dicKey = val.Key;
+                    }
+                }
+                orderedBottlenecks.Add(dicKey, max);
+                bottlenecks.Remove(dicKey);
+                max = 0;
+                dicKey = "";
+            }
+
+            nodes2 = new List<Node>(nodes);
+            Console.WriteLine("//////////////////////////////////NODES2 LIST INFO///////////////////////////////////////////");
+            for (int i=0; i<nodes2.Count;i++)
+            {
+                Console.WriteLine("* NODE NAME: " + nodes2[i].getNodeName());
+                Console.WriteLine("Node Children Count: " + nodes2[i].children.Count);
+                for (int j=0; j<nodes2[i].children.Count;j++)
+                {
+                    Console.WriteLine("Child " + j + ": " + nodes2[i].children[j].getNodeName());
+                    Console.WriteLine("Edge flow, capacity values: " + nodes2[i].edges[j][0] + " ," + nodes2[i].edges[j][1]);
+                }
+            }
+            Console.WriteLine("/////////////////////////////////////////////////////////////////////////////");
+            Console.WriteLine("******************************************ORDERED BOTTLENECKS INFO******************************************");
+            int mycount = 0;
+            foreach (KeyValuePair<string, int> val in orderedBottlenecks)
+            {
+                Console.WriteLine(mycount + ". index: " + val.Key + " value: " + val.Value);
+                mycount++;
             }
         }
 
@@ -308,7 +380,9 @@ namespace testUI
                 {
                     path.Add(nodes[currentNodeIndex].getNodeName());
                     Console.Write("Path Final: ");
-                    pathList.Add(path);
+                    List<string> tempPathList = new List<string>(path);
+                    pathList.Add(tempPathList);
+                    Console.WriteLine("PATHLIST COUNT: " + pathList.Count);
                     for (int i = 0; i < path.Count; i++)
                     {
                         Console.Write(path[i] + " ");
@@ -325,6 +399,8 @@ namespace testUI
                 }
             }
             Console.WriteLine("Max Flow: " + totalMaxFlow);
+            showAugmentingPaths();
+            minCutFunc();
         }
       
 
@@ -684,7 +760,8 @@ namespace testUI
                 else {
                     MessageBox.Show("Seçtiğiniz ana düğümde belirtilen çocuk düğüm bulunamadı!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-            }       
+            }
+            guiChildrenInfos();
         }
 
         public void printAllKeys()
@@ -701,6 +778,38 @@ namespace testUI
             }
         }
 
+        public void showAugmentingPaths()
+        {
+            orderedPathInfo.Text = "";
+            for (int i=0; i<pathList.Count;i++)
+            {
+                //List<string> templist = new List<string>(pathList[i]);
+                string convertedPath = string.Join(" => ", pathList[i]);
+                Console.WriteLine("CONVERTED PATH: " + convertedPath);
+                orderedPathInfo.Text += convertedPath + " Bottleneck:" + bottleneckValues[i] +"\n";
+            }
+            
+        }
+
+        public void guiChildrenInfos()
+        {
+            int num = 0;
+            childrenInfos.Text = "\n";
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                for (int j = 0; j < nodes[i].children.Count; j++)
+                {
+                    childrenInfos.Text += nodes[i].getNodeName() + "--->" + nodes[i].children[j].getNodeName() + " Kapasite: "+ nodes[i].edges[j][1]+"||";
+                    num++;
+                    if (num % 3 == 0)
+                    {
+                        childrenInfos.Text += "\n";
+                    }
+                }
+                //childrenInfos.Text += "\n";
+            }
+        }
+
         private void Form2_Load(object sender, EventArgs e)
         {
 
@@ -709,6 +818,11 @@ namespace testUI
         private void button5_Click_1(object sender, EventArgs e)
         {
             drawGraph();
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
