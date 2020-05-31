@@ -253,6 +253,10 @@ namespace testUI
                             tempMaxFlow -= nodes[index].edges[i][0];
                             string tempstring = nodes[index].getNodeName() + nodes[index].children[i].getNodeName();
                             nameofnodes.Add(tempstring);
+                            if (stack.Contains(nodes[index].children[i].getNodeName()))
+                            {
+                                stack.Remove(nodes[index].children[i].getNodeName());
+                            }
                         }
                     }
                 }
@@ -875,7 +879,7 @@ namespace testUI
                 Console.WriteLine("CONVERTED PATH: " + convertedPath);
                 orderedPathInfo.Text += convertedPath + " Bottleneck:" + bottleneckValues[i] +"\n";
             }
-            
+            orderedPathInfo.Text += "Max. Akış: " + totalMaxFlow + "\n";
         }
 
         public void guiChildrenInfos()
