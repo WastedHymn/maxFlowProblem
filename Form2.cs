@@ -16,11 +16,13 @@ namespace testUI
     {
         public List<string> path = new List<string>();
         public List<Node> nodes = new List<Node>();
-        public List<Node> nodes2;
+        //public List<Node> nodes2;
         public List<int> selectedChildIndexes = new List<int>();
+        List<string> nameofnodes = new List<string>();
         //public List<List<string>> bottleneckList = new List<List<string>>();
-        public Dictionary<string, int> bottlenecks = new Dictionary<string, int>();
-        public Dictionary<string, int> orderedBottlenecks = new Dictionary<string, int>();
+        public Dictionary<string, List<int>> bottlenecks = new Dictionary<string, List<int>>();
+        public Dictionary<string, List<int>> orderedBottlenecks = new Dictionary<string, List<int>>();
+        public Dictionary<string, int> maxFlowEdges = new Dictionary<string, int>();
         public List<List<string>> pathList = new List<List<string>>();
         public List<int> bottleneckValues = new List<int>();
         public Dictionary<int, List<Node>> availablePaths = new Dictionary<int, List<Node>>();
@@ -187,7 +189,10 @@ namespace testUI
             
             if (!bottlenecks.ContainsKey(bottlenecknodes))
             {
-                bottlenecks.Add(bottlenecknodes, 1);
+                List<int> tempList = new List<int>();
+                tempList.Add(1);
+                tempList.Add(bottleneck);
+                bottlenecks.Add(bottlenecknodes, tempList);
                 Console.WriteLine("Bottleneck Node: " + bottlenecknodes);
                 Console.WriteLine("Bottleneck Node Count" + bottlenecks[bottlenecknodes]);
             }
@@ -195,9 +200,10 @@ namespace testUI
             {
                 Console.WriteLine("Bottleneck Node: " + bottlenecknodes);
                 Console.WriteLine("Old Bottleneck Node Count" + bottlenecks[bottlenecknodes]);
-                int tempval = bottlenecks[bottlenecknodes]++;
-                bottlenecks[bottlenecknodes] = tempval;
-                Console.WriteLine("New Node Count" + bottlenecks[bottlenecknodes]);
+                int tempval = bottlenecks[bottlenecknodes][0]++;
+                bottlenecks[bottlenecknodes][0] = tempval;
+                bottlenecks[bottlenecknodes][1] += bottleneck;
+                Console.WriteLine("New Node Count: " + bottlenecks[bottlenecknodes][0] + " Bottleneck value: " + bottlenecks[bottlenecknodes][1]);
             }
             bottleneckValues.Add(bottleneck);
             return bottleneck;
@@ -228,47 +234,117 @@ namespace testUI
 
         public void minCutFunc()
         {
-            int dicLen = bottlenecks.Count;
+            List<string> stack = new List<string>();
+            string startNode = nodes.Find(item => item.getNodeType() == "start").getNodeName();
+            Console.WriteLine("START NODE: "+ startNode);
+            int tempMaxFlow = totalMaxFlow;
+            stack.Add(startNode);
+            while (tempMaxFlow > 0)
+            {
+                string currentNodeName = stack[0];
+                int index = nodes.FindIndex(item => item.getNodeName() == currentNodeName);
+                for (int i = 0; i < nodes[index].edges.Count; i++)
+                {
+                    if (nodes[index].edges[i][0] > 0)
+                    {
+                        stack.Add(nodes[index].children[i].getNodeName());
+                        if (nodes[index].edges[i][0] == nodes[index].edges[i][1])
+                        {
+                            tempMaxFlow -= nodes[index].edges[i][0];
+                            string tempstring = nodes[index].getNodeName() + nodes[index].children[i].getNodeName();
+                            nameofnodes.Add(tempstring);
+                        }
+                    }
+                }
+                stack.RemoveAt(0);
+            }
+            /*
+            //int dicLen = bottlenecks.Count;
+            int dicLen2 = 0;
+            Console.WriteLine("DICLEN2: " + dicLen2);
             string dicKey = "";
             int max = 0;
-            //sort the list
+            List<string> tempstringlist = new List<string>();
+            Dictionary<string, int> tempdictionary = new Dictionary<string, int>();
+            //int bottleneckvalue=0;
+            int tempMaxFlow = totalMaxFlow;
+            int someCounter = 0;
 
-            while (bottlenecks.Count > 0)
+            for (int i=0; i<nodes.Count;i++)
             {
-                foreach (KeyValuePair<string, int> val in bottlenecks)
+                for (int j=0; j<nodes[i].children.Count;j++)
+                {
+                    Console.WriteLine("AMAAAAN");
+                    if (nodes[i].edges[j][0] == nodes[i].edges[j][1])
+                    {
+                        Console.WriteLine("BLEAGCITECTS");
+                        string tempnodes = nodes[i].getNodeName() + "," + nodes[i].children[j].getNodeName();
+                        int tempFlow = nodes[i].edges[j][0];
+                        maxFlowEdges.Add(tempnodes, tempFlow);
+                    }
+                }
+            }
+            foreach (KeyValuePair<string, int> val in maxFlowEdges)
+            {
+                tempMaxFlow -= val.Value;
+                someCounter++;
+                tempstringlist.Add(val.Key);
+                if (tempMaxFlow <= 0)
+                {
+                    Console.WriteLine("SOMECOUNTER: " + someCounter);
+                    break;
+                }
+            }*/
+            /*
+            dicLen2 = maxFlowEdges.Count;
+            for (int i=0; i<dicLen2;i++)
+            {
+                foreach (KeyValuePair<string, int> val in maxFlowEdges)
                 {
                     if (val.Value > max)
                     {
+                        Console.WriteLine("KEY: " + val.Key + " VALUE: " + val.Value);
                         max = val.Value;
                         dicKey = val.Key;
                     }
                 }
-                orderedBottlenecks.Add(dicKey, max);
-                bottlenecks.Remove(dicKey);
-                max = 0;
+                tempdictionary.Add(dicKey, max);
+                maxFlowEdges.Remove(dicKey);
                 dicKey = "";
-            }
-
-            nodes2 = new List<Node>(nodes);
-            Console.WriteLine("//////////////////////////////////NODES2 LIST INFO///////////////////////////////////////////");
-            for (int i=0; i<nodes2.Count;i++)
-            {
-                Console.WriteLine("* NODE NAME: " + nodes2[i].getNodeName());
-                Console.WriteLine("Node Children Count: " + nodes2[i].children.Count);
-                for (int j=0; j<nodes2[i].children.Count;j++)
+                max = 0;
+             
+                someCounter++;
+                tempMaxFlow -= max;
+                if (tempMaxFlow <= 0)
                 {
-                    Console.WriteLine("Child " + j + ": " + nodes2[i].children[j].getNodeName());
-                    Console.WriteLine("Edge flow, capacity values: " + nodes2[i].edges[j][0] + " ," + nodes2[i].edges[j][1]);
+                    Console.WriteLine("TEMP MAX FLOW: " + tempMaxFlow + " someCounter: " + someCounter);
+                    break;
+                }
+                else
+                {
+
+                    maxFlowEdges.Remove(dicKey);
+                    max = 0;
                 }
             }
-            Console.WriteLine("/////////////////////////////////////////////////////////////////////////////");
-            Console.WriteLine("******************************************ORDERED BOTTLENECKS INFO******************************************");
-            int mycount = 0;
-            foreach (KeyValuePair<string, int> val in orderedBottlenecks)
+            */
+            /*
+            foreach(KeyValuePair<string, int> val in tempdictionary)
             {
-                Console.WriteLine(mycount + ". index: " + val.Key + " value: " + val.Value);
-                mycount++;
-            }
+                tempMaxFlow -= val.Value;
+                someCounter++;
+                tempstringlist.Add(val.Key);
+                if (tempMaxFlow <= 0)
+                {
+                    Console.WriteLine("SOMECOUNTER: " + someCounter);
+                    break;
+                }
+            }*/
+            //Console.WriteLine("TEMPSTRING LENGTH: " + tempstringlist.Count);
+            //for (int i=0; i<tempstringlist.Count;i++)
+            //{
+            //    Console.WriteLine("TEMPSTRING: " + tempstringlist[i]);
+            //}
         }
 
         public void resetDeadEnds()
@@ -532,6 +608,8 @@ namespace testUI
             //string cap = nodeCapacityTextBox.Text;
             //!match.Success && numberString.Length > 0              
            numberString = nodeNumberInput.Text;
+            orderedPathInfo.Text = "Max. akışı bulunuz.";
+            childrenInfos.Text = "Düğümleri oluşturunuz";
             int numberOfNodes = 0;
             bool check = numberString.Any(x => char.IsLetter(x));
            
@@ -581,7 +659,15 @@ namespace testUI
                     childNode.Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
                     if (flow > 0)
                     {
-                        newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Orange;
+                        string tempStringg = nodes[i].getNodeName() + nodes[i].children[j].getNodeName();
+                        if (nameofnodes.Contains(tempStringg))
+                        {
+                            newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                        }
+                        else
+                        {
+                            newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Orange;
+                        }
                     }
                     else
                     {
@@ -756,12 +842,13 @@ namespace testUI
                     nodes[mainNode].edges[childNode][1] = Int32.Parse(setEdgeCapacityTextBox.Text);
                     Console.WriteLine("Edge capacity: " + nodes[mainNode].edges[childNode][1]);
                     MessageBox.Show("Seçilen çocuk indexi: " + childNode, "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    guiChildrenInfos();
                 }
                 else {
                     MessageBox.Show("Seçtiğiniz ana düğümde belirtilen çocuk düğüm bulunamadı!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            guiChildrenInfos();
+            
         }
 
         public void printAllKeys()
@@ -1000,3 +1087,52 @@ nodes[currentNodeIndex].deadEnds.Add(dead);
                         currentNodeIndex = ind;
                     }
 */
+/*
+           //sort the list
+           while (bottlenecks.Count > 0)
+           {
+               foreach (KeyValuePair<string, List<int>> val in bottlenecks)
+               {
+                   if (val.Value[0] > max)
+                   {
+                       max = val.Value[0];
+                       dicKey = val.Key;
+                       bottleneckvalue = val.Value[1];
+                   }
+               }
+               List<int> tempo = new List<int>();
+               tempo.Add(max);
+               tempo.Add(bottleneckvalue);
+               orderedBottlenecks.Add(dicKey, tempo);
+               bottlenecks.Remove(dicKey);
+               max = 0;
+               dicKey = "";
+           }
+
+           nodes2 = new List<Node>(nodes);
+           Console.WriteLine("//////////////////////////////////NODES2 LIST INFO///////////////////////////////////////////");
+           for (int i=0; i<nodes2.Count;i++)
+           {
+               Console.WriteLine("* NODE NAME: " + nodes2[i].getNodeName());
+               Console.WriteLine("Node Children Count: " + nodes2[i].children.Count);
+               for (int j=0; j<nodes2[i].children.Count;j++)
+               {
+                   Console.WriteLine("Child " + j + ": " + nodes2[i].children[j].getNodeName());
+                   Console.WriteLine("Edge flow, capacity values: " + nodes2[i].edges[j][0] + " ," + nodes2[i].edges[j][1]);
+               }
+           }
+           Console.WriteLine("/////////////////////////////////////////////////////////////////////////////");
+           Console.WriteLine("******************************************ORDERED BOTTLENECKS INFO******************************************");
+           int mycount = 0;
+
+           foreach (KeyValuePair<string, List<int>> val in orderedBottlenecks)
+           {
+               Console.WriteLine(mycount + ". index: " + val.Key + " max occurrence value: " + val.Value[0] + " max bottleneck value: " + val.Value[1]);
+               tempMaxFlow -= val.Value[1];
+               mycount++;
+               if (tempMaxFlow <= 0)
+               {
+                   Console.WriteLine("TOTAL MAX FLOW:" + tempMaxFlow + " mycount: " + mycount);
+                   break;
+               }
+           }*/
