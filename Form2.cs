@@ -16,31 +16,19 @@ namespace testUI
     {
         public List<string> path = new List<string>();
         public List<Node> nodes = new List<Node>();
-        //public List<Node> nodes2;
         public List<int> selectedChildIndexes = new List<int>();
         List<string> nameofnodes = new List<string>();
-        //public List<List<string>> bottleneckList = new List<List<string>>();
         public Dictionary<string, List<int>> bottlenecks = new Dictionary<string, List<int>>();
-        public Dictionary<string, List<int>> orderedBottlenecks = new Dictionary<string, List<int>>();
         public Dictionary<string, int> maxFlowEdges = new Dictionary<string, int>();
         public List<List<string>> pathList = new List<List<string>>();
         public List<int> bottleneckValues = new List<int>();
-        public Dictionary<int, List<Node>> availablePaths = new Dictionary<int, List<Node>>();
-        public int pathCounter = 0;
-        public Node startNode;
         public int currentNodeIndex;
         public int delta;
         public int totalMaxFlow;
-        public int loopCounter = 0;
         public string numberString;
         public Form2()
         {
             InitializeComponent();
-            //TextBox t1 = new TextBox();
-           // t1.Name = "text1";
-           // t1.Width = 300;
-           // t1.Text = "T E S T";
-            //this.Controls.Add(t1);
             setupDropDown();
 
         }
@@ -48,7 +36,6 @@ namespace testUI
         public int findDelta()
         {
             int totalMaxFlow;
-            //int nodeNumber = nodes.Count;
             int maxCapacity = 0;
             int counter = 0;
             for (int i = 0; i < nodes.Count; i++)
@@ -140,13 +127,10 @@ namespace testUI
 
         public int findBottleneck()
         {
-            //currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1].getNodeName());
-            //int startBottleneckIndex = selectedChildIndexes[0];
             int bottleneck = 1000000000;
             Console.WriteLine("BOTTLENECK START VALUE: " + bottleneck);
             List<string> templist = new List<string>();
             string bottlenecknodes = "";
-            //Console.Write("selectedChildIndexes: ");
             Console.WriteLine();
             for (int i = 0; i < path.Count - 1; i++)
             {
@@ -166,8 +150,7 @@ namespace testUI
                     {
                         bottleneck = num2;
                         bottlenecknodes = path[i] + "," + path[i + 1];
-                        //templist.Add(path[i]);
-                        //templist.Add(path[i+1]);
+                        
                     }
                 }
                 else
@@ -262,93 +245,7 @@ namespace testUI
                 }
                 stack.RemoveAt(0);
             }
-            /*
-            //int dicLen = bottlenecks.Count;
-            int dicLen2 = 0;
-            Console.WriteLine("DICLEN2: " + dicLen2);
-            string dicKey = "";
-            int max = 0;
-            List<string> tempstringlist = new List<string>();
-            Dictionary<string, int> tempdictionary = new Dictionary<string, int>();
-            //int bottleneckvalue=0;
-            int tempMaxFlow = totalMaxFlow;
-            int someCounter = 0;
-
-            for (int i=0; i<nodes.Count;i++)
-            {
-                for (int j=0; j<nodes[i].children.Count;j++)
-                {
-                    Console.WriteLine("AMAAAAN");
-                    if (nodes[i].edges[j][0] == nodes[i].edges[j][1])
-                    {
-                        Console.WriteLine("BLEAGCITECTS");
-                        string tempnodes = nodes[i].getNodeName() + "," + nodes[i].children[j].getNodeName();
-                        int tempFlow = nodes[i].edges[j][0];
-                        maxFlowEdges.Add(tempnodes, tempFlow);
-                    }
-                }
-            }
-            foreach (KeyValuePair<string, int> val in maxFlowEdges)
-            {
-                tempMaxFlow -= val.Value;
-                someCounter++;
-                tempstringlist.Add(val.Key);
-                if (tempMaxFlow <= 0)
-                {
-                    Console.WriteLine("SOMECOUNTER: " + someCounter);
-                    break;
-                }
-            }*/
-            /*
-            dicLen2 = maxFlowEdges.Count;
-            for (int i=0; i<dicLen2;i++)
-            {
-                foreach (KeyValuePair<string, int> val in maxFlowEdges)
-                {
-                    if (val.Value > max)
-                    {
-                        Console.WriteLine("KEY: " + val.Key + " VALUE: " + val.Value);
-                        max = val.Value;
-                        dicKey = val.Key;
-                    }
-                }
-                tempdictionary.Add(dicKey, max);
-                maxFlowEdges.Remove(dicKey);
-                dicKey = "";
-                max = 0;
-             
-                someCounter++;
-                tempMaxFlow -= max;
-                if (tempMaxFlow <= 0)
-                {
-                    Console.WriteLine("TEMP MAX FLOW: " + tempMaxFlow + " someCounter: " + someCounter);
-                    break;
-                }
-                else
-                {
-
-                    maxFlowEdges.Remove(dicKey);
-                    max = 0;
-                }
-            }
-            */
-            /*
-            foreach(KeyValuePair<string, int> val in tempdictionary)
-            {
-                tempMaxFlow -= val.Value;
-                someCounter++;
-                tempstringlist.Add(val.Key);
-                if (tempMaxFlow <= 0)
-                {
-                    Console.WriteLine("SOMECOUNTER: " + someCounter);
-                    break;
-                }
-            }*/
-            //Console.WriteLine("TEMPSTRING LENGTH: " + tempstringlist.Count);
-            //for (int i=0; i<tempstringlist.Count;i++)
-            //{
-            //    Console.WriteLine("TEMPSTRING: " + tempstringlist[i]);
-            //}
+            
         }
 
         public void resetDeadEnds()
@@ -374,7 +271,7 @@ namespace testUI
                 if (nodes[currentNodeIndex].getNodeType() != "finish")
                 {
                     string strrr = "-" + nodes[currentNodeIndex].getNodeName();
-                    Console.WriteLine("strrr: " + strrr);
+                    //Console.WriteLine("strrr: " + strrr);
                     if (path.Contains(nodes[currentNodeIndex].getNodeName()) == false && path.Contains(strrr)==false )
                     { 
                         ///Adding current node to the path.
@@ -382,8 +279,7 @@ namespace testUI
                     }
                     string ind = findMaxCapacityEdge();
                     Console.WriteLine("node != finish && İND: " + ind);
-                    //path.FindIndex(item => item.getNodeName() == nodes[currentNodeIndex].getNodeName()) == -1
-                    //path.FindIndex(item => item.Contains(nodes[currentNodeIndex].getNodeName())) == -1
+                   
                     
                     Console.Write("Path: ");
                     for (int i = 0; i < path.Count; i++)
@@ -410,7 +306,7 @@ namespace testUI
                             deadChild = selectedChildIndexes[path.Count - 1];
                             selectedChildIndexes.RemoveAt(selectedChildIndexes.Count - 1);
                             currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1].Replace("-",""));
-                            //selectedChildIndexes.RemoveAt(path.Count-1);
+                            
                             if (deadChild == -1)
                             {
                                 nodes[currentNodeIndex].deadNeighbours.Add(nodes[reverseNodeIndex].getNodeName());
@@ -459,10 +355,10 @@ namespace testUI
                 else
                 {
                     path.Add(nodes[currentNodeIndex].getNodeName());
-                    Console.Write("Path Final: ");
+                    Console.Write("Final Path: ");
                     List<string> tempPathList = new List<string>(path);
                     pathList.Add(tempPathList);
-                    Console.WriteLine("PATHLIST COUNT: " + pathList.Count);
+                    //Console.WriteLine("PATHLIST COUNT: " + pathList.Count);
                     for (int i = 0; i < path.Count; i++)
                     {
                         Console.Write(path[i] + " ");
@@ -501,9 +397,6 @@ namespace testUI
         {
             string nodeN = newNodeNameTextBox.Text;
 
-           // bool check = nodeN.Any(x => char.IsLetter(x));
-            //if (check)
-            //{
                 if (nodeDropDown.Items.Count != 0)
                 {
                     nodeDropDown.Items[nodeDropDown.SelectedIndex] = nodeN;
@@ -524,28 +417,11 @@ namespace testUI
                     MessageBox.Show("Önce düğüm sayısını belirleyin!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Lütfen bir harf kullanarak isim belirleyiniz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //}
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //ADDING NAME TO THE SELECTED NODE
-            /*
-            if (nodeDropDown.Items.Count != 0)
-            {
-                MessageBox.Show("Lütfen kapasite belirtin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                MessageBox.Show("Lütfen düğüm sayısını belirtin daha sonra düğümün kapasitesini değiştirin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }*/
-            //int index  = nodeDropDown.SelectedIndex;
-            //Console.WriteLine("deneme:    " + nodeN);
-
+          
             changeNodeName();
 
         }
@@ -607,10 +483,7 @@ namespace testUI
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            //Regex regex = new Regex(@"[\! \# \$ \% \& \' \( \) \* \+ \, \- \. \: \; \< \= \> \? \@ \[ \] \^  \` \{ \| \} \~ /ö/ü/Ö/ÜA-Za-z]");
-            //Match match = regex.Match(numberString);
-            //string cap = nodeCapacityTextBox.Text;
-            //!match.Success && numberString.Length > 0              
+                       
            numberString = nodeNumberInput.Text;
             orderedPathInfo.Text = "Max. akışı bulunuz.";
             childrenInfos.Text = "Düğümleri oluşturunuz";
@@ -677,11 +550,7 @@ namespace testUI
                     {
                         newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
                     }
-                    //graph.AddEdge(nodes[i].getNodeName(), nodes[i].children[j].getNodeName()).Attr.Color = Microsoft.Msagl.Drawing.Color.DarkGreen;
-                    
-                    //newEdge.Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                    //string cap = nodes[i].edges[j][0].ToString() + "/" + nodes[i].edges[j][1].ToString();
-                    //newEdge.LabelText = cap;
+                  
                 }
              
             }
@@ -715,43 +584,7 @@ namespace testUI
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            /*
-            //Change node capacity
-            string cap = nodeCapacityTextBox.Text;
-            bool check = cap.Any(x => char.IsLetter(x));
-            if (check)
-            {
-                MessageBox.Show("Lütfen sayı giriniz!", "Uyarı",MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Console.WriteLine("Lütfen sayı giriniz!");
-            }
-            else
-            {
-                if (nodeDropDown.SelectedIndex == 0)
-                {
-                    MessageBox.Show("Başlangıç düğümünün kapasitesini değiştiremezsiniz!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else if((cap.Length != 0) && (nodeDropDown.Items.Count !=0))
-                {
-                    int capacity = Int32.Parse(cap);
-                    nodes[nodeDropDown.SelectedIndex].setNodeCapacity(capacity);
-                    string mess = nodes[nodeDropDown.SelectedIndex].getNodeName() + " düğümünün kapasitesi " + nodes[nodeDropDown.SelectedIndex].getNodeCapacity() + " olarak değiştirildi!";
-                    Console.WriteLine(mess);
-                    Console.WriteLine("/////////////////////////");
-                    MessageBox.Show(mess, "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    printObjectAttributes();
-                }
-                else
-                {
-                    if (nodeDropDown.Items.Count != 0)
-                    {
-                        MessageBox.Show("Lütfen kapasite belirtin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Lütfen düğüm sayısını belirtin daha sonra düğümün kapasitesini değiştirin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                }
-            }*/
+            
         }
 
         public void printChildren()
@@ -807,8 +640,7 @@ namespace testUI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //printChildren();
-            //findPaths();
+            
             findMaxFlow();
             drawGraph();
         }
@@ -831,15 +663,7 @@ namespace testUI
                 int childNode = nodes[mainNode].children.FindIndex(item => item.getNodeName() == str);
                 Console.WriteLine("child node: "+ childNode);
                 printAllKeys();
-                //List<int> keyList = new List<int>(nodes[mainNode].edges.Keys);
-                //var t = nodes[mainNode].edges.Keys;
-                //for (int i=0; i<keyList.Count;i++)
-                //{
-                //  Console.Write(keyList[i] + " ");
-                //   Console.WriteLine();
-                //   nodes[mainNode].edges[1][0] = 5;
-                //    Console.WriteLine(nodes[mainNode].edges[1][0]);
-                //}
+             
                 Console.WriteLine();
                 if (nodes[mainNode].edges.ContainsKey(childNode))
                 {
@@ -874,7 +698,7 @@ namespace testUI
             orderedPathInfo.Text = "";
             for (int i=0; i<pathList.Count;i++)
             {
-                //List<string> templist = new List<string>(pathList[i]);
+                
                 string convertedPath = string.Join(" => ", pathList[i]);
                 Console.WriteLine("CONVERTED PATH: " + convertedPath);
                 orderedPathInfo.Text += convertedPath + " Bottleneck:" + bottleneckValues[i] +"\n";
@@ -897,7 +721,7 @@ namespace testUI
                         childrenInfos.Text += "\n";
                     }
                 }
-                //childrenInfos.Text += "\n";
+               
             }
         }
 
@@ -917,226 +741,3 @@ namespace testUI
         }
     }
 }
-
-/*
-public void findPaths()
-{
-    // nodes[currentNodeIndex] == current node
-    pathCounter = 0;
-    currentNodeIndex = 0;
-    path.Add(nodes[currentNodeIndex].getNodeName());
-    while (path.Count > 0)
-    {
-        if (nodes[currentNodeIndex].getNodeType() != "finish")
-        {
-            Console.WriteLine("--------------------------------------------------------------------------------------------");
-            for (int b = 0; b < path.Count; b++)
-            {
-                Console.Write(path[b].ToUpper() + " ");
-            }
-            Console.WriteLine("\n--------------------------------------------------------------------------------------------");
-
-            Console.WriteLine("Current nodename:  " + nodes[currentNodeIndex].getNodeName() + " children number: " + nodes[currentNodeIndex].children.Count);
-            Console.WriteLine("CURRENT NODE INDEX:  " + currentNodeIndex);
-            for (int i = 0; i < nodes[currentNodeIndex].children.Count; i++)
-            {
-                //nodes[currentNodeIndex].visitedNodes.FindIndex(item => item.getNodeName == nodes[currentNodeIndex].children)
-                Console.WriteLine("+++++ " + nodes[currentNodeIndex].getNodeName() + " " + nodes[currentNodeIndex].children[i].getNodeName() + " " + nodes[currentNodeIndex].visitedNodes.Contains(nodes[currentNodeIndex].children[i]));
-                if (!nodes[currentNodeIndex].visitedNodes.Contains(nodes[currentNodeIndex].children[i]))
-                {
-                    nodes[currentNodeIndex].visitedNodes.Add(nodes[currentNodeIndex].children[i]);
-                    path.Add(nodes[currentNodeIndex].children[i].getNodeName());
-                    string str = nodes[currentNodeIndex].children[i].getNodeName();
-                    Console.WriteLine();
-                    currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == str);
-                    Console.WriteLine("INDEX: " + currentNodeIndex);
-                    //nodes[currentNodeIndex].visitedNodes.FindIndex(item => item.getNodeName == nodes[currentNodeIndex].children)
-                    break;
-                }
-                else if (nodes[currentNodeIndex].visitedNodes.Count == nodes[currentNodeIndex].children.Count)
-                {
-                    nodes[currentNodeIndex].visitedNodes.Clear();
-                    path.Remove(nodes[currentNodeIndex].getNodeName());
-                    if ((path.Count - 1) >= 0)
-                    {
-                        currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1]);
-                        //currentNodeIndex = path.Count - 1;
-
-                    }
-                    else
-                    {
-                        //Finish searching for paths
-                        break;
-                    }
-                }
-            }
-        }
-        else
-        {
-            Console.WriteLine("CURRR " + nodes[currentNodeIndex].getNodeName());
-            //path.Add(nodes[currentNodeIndex]);
-            //List<Node> list = new List<Node>(path);
-            //availablePaths.Add(pathCounter, list);
-            pathCounter++;
-            int x = path.Count - 1;
-            Console.WriteLine("x: " + x);
-            Console.WriteLine("PATHLENGTH: " + path.Count);
-            Console.WriteLine("Path: ");
-            for (int i = 0; i < path.Count; i++)
-            {
-                Console.Write(i + " " + path[i] + " ");
-            }
-            path.RemoveAt(x);
-            Console.WriteLine();
-            currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1]);
-            Console.WriteLine("indeddddd: " + currentNodeIndex);
-            Console.WriteLine("brrrrrrrr: " + nodes[currentNodeIndex].getNodeName());
-            //currentNodeIndex = path.Count - 1;
-        }
-    }
-    //Console.WriteLine("Current node: " + currentNode.getNodeName() + ", capacity:" + currentNode.getNodeCapacity() + ", current flow:" + currentNode.getNodeCurrentFlow());
-    //path.Add();
-
-    //PRINT FOUND PATHS
-    for (int i = 0; i < availablePaths.Count; i++)
-    {
-        //Console.WriteLine("PATH "+ i +":");
-        for (int j = 0; j < availablePaths[i].Count; j++)
-        {
-            Console.Write(availablePaths[i][j].getNodeName() + " ");
-        }
-        Console.WriteLine();
-    }
-    Console.WriteLine("YOLLAR BULUNDU!");
-}-------------------------------------------------------*/
-
-//else if (loopCounter > path.Count - 1)
-//{
-// delta = delta / 2;
-// selectedChildIndexes.Clear();
-// path.Clear();
-// currentNodeIndex = 0;
-// loopCounter = 0;
-//}
-
-//if (path[path.Count-1].Contains("-"))
-//{
-//this node is a reverse direction node 
-//  int reverseNodeIndex = currentNodeIndex;
-//  path.RemoveAt(path.Count - 1 );
-// if (path.Count > 0 )
-// {
-//   currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1]);
-//    nodes[currentNodeIndex].deadNeighbours.Add(nodes[reverseNodeIndex].getNodeName());
-// }
-// else
-// {
-//     
-//   }
-//}
-//else
-//{
-// int deadChild = selectedChildIndexes[path.Count - 1];
-// path.RemoveAt(path.Count - 1);
-// if(path.Count > 0)
-// {
-//      currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1]);
-
-//   }
-//}
-/*
-    if (ind == -1)
-                    {
-                        Console.WriteLine("İND == -1");
-                        Console.WriteLine("PATH COUNT: " + path.Count);
-                        //int lastPathIndex = path.Count - 1;
-                        //path.RemoveAt(path.Count - 1);
-                        Console.Write("Path 2 : ");
-                        for (int i = 0; i<path.Count; i++)
-                        {
-                            Console.Write(path[i] + " ");
-                        }
-                        if (selectedChildIndexes.Count == 0)
-                        {
-                            Console.WriteLine("DELTA/2");
-                            delta = delta / 2;
-                            selectedChildIndexes.Clear();
-                            path.Clear();
-                            resetDeadEnds();
-currentNodeIndex = 0;
-                            //loopCounter = 0;
-                        }
-                        else
-                        {
-                            string lastNodeName = path[path.Count - 1];
-//int deadEndIndex = selectedChildIndexes[lastNodeIndex];
-Console.WriteLine("selectedChildIndexes Count: " + selectedChildIndexes.Count);
-                            selectedChildIndexes.RemoveAt(selectedChildIndexes.Count - 1);
-                            path.RemoveAt(path.Count - 1);
-                            string nodeName = path[path.Count - 1];
-//currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == path[path.Count - 1].getNodeName());
-currentNodeIndex = nodes.FindIndex(item => item.getNodeName() == nodeName);
-                            int dead = nodes[currentNodeIndex].children.FindIndex(item => item.getNodeName() == lastNodeName);
-nodes[currentNodeIndex].deadEnds.Add(dead);
-                            
-                        }
-                    }
-                    else
-                    {
-                        //loopCounter++;
-                        //Console.WriteLine("loopCounter: " + loopCounter);
-                        Console.WriteLine("PATH COUNT 2: " + path.Count);
-                        Console.WriteLine("Şimdiki düğüm: " + nodes[currentNodeIndex].getNodeName());
-                        Console.WriteLine("Gidilecek Düğüm: " + nodes[ind].getNodeName());
-                        currentNodeIndex = ind;
-                    }
-*/
-/*
-           //sort the list
-           while (bottlenecks.Count > 0)
-           {
-               foreach (KeyValuePair<string, List<int>> val in bottlenecks)
-               {
-                   if (val.Value[0] > max)
-                   {
-                       max = val.Value[0];
-                       dicKey = val.Key;
-                       bottleneckvalue = val.Value[1];
-                   }
-               }
-               List<int> tempo = new List<int>();
-               tempo.Add(max);
-               tempo.Add(bottleneckvalue);
-               orderedBottlenecks.Add(dicKey, tempo);
-               bottlenecks.Remove(dicKey);
-               max = 0;
-               dicKey = "";
-           }
-
-           nodes2 = new List<Node>(nodes);
-           Console.WriteLine("//////////////////////////////////NODES2 LIST INFO///////////////////////////////////////////");
-           for (int i=0; i<nodes2.Count;i++)
-           {
-               Console.WriteLine("* NODE NAME: " + nodes2[i].getNodeName());
-               Console.WriteLine("Node Children Count: " + nodes2[i].children.Count);
-               for (int j=0; j<nodes2[i].children.Count;j++)
-               {
-                   Console.WriteLine("Child " + j + ": " + nodes2[i].children[j].getNodeName());
-                   Console.WriteLine("Edge flow, capacity values: " + nodes2[i].edges[j][0] + " ," + nodes2[i].edges[j][1]);
-               }
-           }
-           Console.WriteLine("/////////////////////////////////////////////////////////////////////////////");
-           Console.WriteLine("******************************************ORDERED BOTTLENECKS INFO******************************************");
-           int mycount = 0;
-
-           foreach (KeyValuePair<string, List<int>> val in orderedBottlenecks)
-           {
-               Console.WriteLine(mycount + ". index: " + val.Key + " max occurrence value: " + val.Value[0] + " max bottleneck value: " + val.Value[1]);
-               tempMaxFlow -= val.Value[1];
-               mycount++;
-               if (tempMaxFlow <= 0)
-               {
-                   Console.WriteLine("TOTAL MAX FLOW:" + tempMaxFlow + " mycount: " + mycount);
-                   break;
-               }
-           }*/

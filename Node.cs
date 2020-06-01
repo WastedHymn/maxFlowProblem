@@ -17,8 +17,6 @@ namespace testUI
         //deadNeighbours list stores neighbours name that leads a dead end node
         public List<string> deadNeighbours = new List<string>();
         public List<string> neighbours = new List<string>();
-        //public List<int> edgesToChildren = new List<int>();
-        //public List<int> residualEdgesFromChildren = new List<int>();
         private float nodeCapacity;
         private float nodeCurrentFlow;
 
@@ -84,3 +82,9 @@ namespace testUI
         }
     }
 }
+
+
+
+
+//public List<int> edgesToChildren = new List<int>();
+//public List<int> residualEdgesFromChildren = new List<int>();
