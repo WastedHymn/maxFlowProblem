@@ -39,7 +39,6 @@ C:\Users\Gravity\Documents\maxFlowProblem\bin\Debug\Microsoft.Msagl.GraphViewerG
 C:\Users\Gravity\Documents\maxFlowProblem\obj\Debug\testUI.csprojAssemblyReference.cache
 C:\Users\Gravity\Documents\maxFlowProblem\obj\Debug\testUI.Form1.resources
 C:\Users\Gravity\Documents\maxFlowProblem\obj\Debug\testUI.Form2.resources
-C:\Users\Gravity\Documents\maxFlowProblem\obj\Debug\testUI.Form3.resources
 C:\Users\Gravity\Documents\maxFlowProblem\obj\Debug\testUI.Properties.Resources.resources
 C:\Users\Gravity\Documents\maxFlowProblem\obj\Debug\testUI.csproj.GenerateResource.cache
 C:\Users\Gravity\Documents\maxFlowProblem\obj\Debug\testUI.csproj.CopyComplete
