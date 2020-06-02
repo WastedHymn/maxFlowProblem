@@ -6,3 +6,6 @@ Sınırsız bir kaynaktan sınırsız bir havuza belirtilen tesisat üzerinden e
 ## Kullanılan Algoritmalar
 Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algoritmasıdır. Akış yolu bulmak için ise Capacity Scaling algoritması kullanımıştır.
 
+## Ekran Görüntüleri
+
+> Graf Oluşturma Ekranı - 1
