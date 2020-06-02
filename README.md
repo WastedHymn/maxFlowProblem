@@ -8,5 +8,19 @@ Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algori
 
 ## Ekran Görüntüleri
 
+###### Örnek Graf
+![graf1](screenshots/exampleGraph.jpg)
+
 ###### Graf Oluşturma Ekranı - 1
 ![menu1](screenshots/mainmenu3.jpg)
+
+###### Graf Oluşturma Ekranı - 2
+![menu2](screenshots/mainmenu4.jpg)
+
+###### Çözüm Grafı
+![graf2](screenshots/solutionGraph.jpg)
+
+Kırmızı renkli kenarlar akışın sıfır olması için kesilmesi gereken kenarları temsil ediyor.
+Turuncu renkli kenarlar akışın sıfırdan farklı olduğu kenarları temsil ediyor.
+
+
