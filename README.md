@@ -8,7 +8,7 @@ Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algori
 
 ## Proje Dökümanı
 [Döküman](https://www.dropbox.com/s/xshgnfwkc6i3odg/YAZ%20LAB_II_3.proje.pdf?dl=0)
-> Proje Visual Studio 2019 üzerinde C# dilinde yazıldı.
+> Proje, Visual Studio 2019 üzerinde C# dilinde yazıldı.
 
 ## Ekran Görüntüleri
 
