@@ -36,3 +36,4 @@ Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algori
 6. https://github.com/microsoft/automatic-graph-layout
 7. https://www.youtube.com/watch?v=9d6QfNXGShM
 8. https://www.youtube.com/watch?v=JP5rgXO_5Sk
+9. https://brilliant.org/wiki/max-flow-min-cut-algorithm/
