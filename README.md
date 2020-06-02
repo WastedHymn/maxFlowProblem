@@ -23,7 +23,7 @@ Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algori
 ###### Çözüm Grafı
 ![graf2](screenshots/solutionGraph.jpg)
 
-- <p style="color:red">Kırmızı</p> renkli kenarlar akışın sıfır olması için kesilmesi gereken kenarları temsil ediyor.
+- <div style="color:red">Kırmızı</div> renkli kenarlar akışın sıfır olması için kesilmesi gereken kenarları temsil ediyor.
 - Turuncu renkli kenarlar akışın sıfırdan farklı olduğu kenarları temsil ediyor.
 
 
