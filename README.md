@@ -35,3 +35,4 @@ Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algori
 5. https://www.youtube.com/watch?v=Iwc3Uj4aaF4
 6. https://github.com/microsoft/automatic-graph-layout
 7. https://www.youtube.com/watch?v=9d6QfNXGShM
+8. https://www.youtube.com/watch?v=JP5rgXO_5Sk
