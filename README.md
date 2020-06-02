@@ -28,12 +28,12 @@ Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algori
 - **Turuncu** renkli kenarlar akışın sıfırdan farklı olduğu kenarları temsil ediyor.
 
 ## Kaynaklar
-1. [Max Flow Ford Fulkerson | Network Flow | Graph Theory] (https://www.youtube.com/watch?v=LdOnanfc5TM)
-2. [Capacity Scaling | Network Flow | Graph Theory] (https://www.youtube.com/watch?v=1ewLrXUz4kk)
+1. [Max Flow Ford Fulkerson | Network Flow | Graph Theory](https://www.youtube.com/watch?v=LdOnanfc5TM)
+2. [Capacity Scaling | Network Flow | Graph Theory](https://www.youtube.com/watch?v=1ewLrXUz4kk)
 3. [Max Flow Problem](https://www.youtube.com/watch?v=M4fyCfFTYV8)
 4. [Ford Fulkerson algorithm for Maximum Flow Problem Example](https://www.youtube.com/watch?v=3LG-My_MoWc)
-5. https://www.youtube.com/watch?v=Iwc3Uj4aaF4
-6. https://github.com/microsoft/automatic-graph-layout
-7. https://www.youtube.com/watch?v=9d6QfNXGShM
-8. https://www.youtube.com/watch?v=JP5rgXO_5Sk
-9. https://brilliant.org/wiki/max-flow-min-cut-algorithm/
+5. [Ford Fulkerson Algorithm for Maximum Flow Problem](https://www.youtube.com/watch?v=Iwc3Uj4aaF4)
+6. [Microsoft Automatic Graph Layout](https://github.com/microsoft/automatic-graph-layout)
+7. [How to create a message box in Windows Form Application](https://www.youtube.com/watch?v=9d6QfNXGShM)
+8. [Modern Flat UI, Drop-down/Slider Menu, Side Menu, Responsive, Only Form - C#, WinForm](https://www.youtube.com/watch?v=JP5rgXO_5Sk)
+9. [Max-flow Min-cut Algorithm](https://brilliant.org/wiki/max-flow-min-cut-algorithm/)
