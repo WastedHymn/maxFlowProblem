@@ -18,7 +18,7 @@ Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algori
 ![menu2](screenshots/mainmenu4.jpg)
 
 ###### Graf Oluşturma Ekranı - 3
-![menu2](screenshots/mainmenu2(2).jpg)
+![menu2](screenshots/mainmenu2 (2).jpg)
 
 ###### Çözüm Grafı
 ![graf2](screenshots/solutionGraph.jpg)
