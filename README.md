@@ -8,4 +8,5 @@ Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algori
 
 ## Ekran Görüntüleri
 
-> Graf Oluşturma Ekranı - 1
+###### Graf Oluşturma Ekranı - 1
+![menu1](screenshots/mainmenu3.jpg)
