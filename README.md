@@ -27,4 +27,11 @@ Problemi çözmek için genel olarak kullanılan algoritma Ford-Fulkerson algori
 - **Kırmızı** renkli kenarlar akışın sıfır olması için kesilmesi gereken kenarları temsil ediyor.
 - **Turuncu** renkli kenarlar akışın sıfırdan farklı olduğu kenarları temsil ediyor.
 
-
+## Kaynaklar
+1. https://www.youtube.com/watch?v=LdOnanfc5TM
+2. https://www.youtube.com/watch?v=1ewLrXUz4kk
+3. https://www.youtube.com/watch?v=M4fyCfFTYV8
+4. https://www.youtube.com/watch?v=3LG-My_MoWc
+5. https://www.youtube.com/watch?v=Iwc3Uj4aaF4
+6. https://github.com/microsoft/automatic-graph-layout
+7. https://www.youtube.com/watch?v=9d6QfNXGShM
